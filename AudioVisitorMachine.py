@@ -15,8 +15,8 @@ class AudioVisitorMachine(Observer):
 
     actuator = None
 
-    def attach_lights(self, lights):
-        self.actuator = lights
+    def attach_audio(self, audio):
+        self.actuator = audio
 
     def on_play_track_u18(self):
         print("Acceso")
@@ -28,9 +28,11 @@ class AudioVisitorMachine(Observer):
 
     def on_play_track_o18(self):
         print("Acceso")
+        self.actuator.turn_on()
 
     def on_turn_off_track_o18(self):
         print("Spento")
+        self.actuator.turn_off()
 
     def update(self, subject: Sensor):
         print("AudioVisitor received new sensor value", subject.current_state.name)
@@ -38,11 +40,21 @@ class AudioVisitorMachine(Observer):
             if "Wait" == self.current_state.name:
                 pass
             else:
-                self.turn_off_track_u18()
+                try:
+                    self.turn_off_track_o18()
+                except:
+                    self.turn_off_track_u18()
 
-        elif "Non Empty" == subject.current_state.name:
+        elif "Non Empty u18" == subject.current_state.name:
             if "Wait" == self.current_state.name:
                 self.play_track_u18()
-
             else:
                 pass
+
+        elif "Non Empty o18" == subject.current_state.name:
+            if "Wait" == self.current_state.name:
+                self.play_track_o18()
+            else:
+                pass
+
+
