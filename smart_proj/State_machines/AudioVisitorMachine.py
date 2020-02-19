@@ -1,4 +1,4 @@
-from Observer import Observer
+from smart_proj.State_machines.Observer import Observer
 from smart_proj.Sensors.Sensor import Sensor
 from statemachine import State
 
