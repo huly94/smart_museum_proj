@@ -1,6 +1,6 @@
 from Observer import Observer
-from Sensor import Sensor
-from statemachine import StateMachine, State
+from smart_proj.Sensors.Sensor import Sensor
+from statemachine import State
 
 
 class AudioVisitorMachine(Observer):

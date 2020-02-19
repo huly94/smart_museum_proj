@@ -1,5 +1,5 @@
 from statemachine import StateMachine
-import Sensor
+from smart_proj.Sensors import Sensor
 
 
 class Observer(StateMachine):

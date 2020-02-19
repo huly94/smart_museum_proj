@@ -1,6 +1,6 @@
 from statemachine import State
 
-from Sensor import Sensor
+from smart_proj.Sensors.Sensor import Sensor
 
 
 class SensorVisitor(Sensor):

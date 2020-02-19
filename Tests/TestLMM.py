@@ -1,11 +1,8 @@
-from ActuatorAudio import ActuatorAudio
-from ActuatorLights import ActuatorLights
-from AudioVisitorMachine import AudioVisitorMachine
-from LightsManagingMachine import LightsManagingMachine
-from SensorClock import SensorClock
-from SensorVisitor import SensorVisitor
-from SensorVisitorAge import SensorVisitorAge
-from SensorWeather import SensorWeather
+from smart_proj.Actuators.ActuatorLights import ActuatorLights
+from smart_proj.State_machines.LightsManagingMachine import LightsManagingMachine
+from smart_proj.Sensors.SensorClock import SensorClock
+from smart_proj.Sensors.SensorVisitor import SensorVisitor
+from smart_proj.Sensors.SensorWeather import SensorWeather
 
 if __name__ == '__main__':
     mySensor = SensorVisitor()
