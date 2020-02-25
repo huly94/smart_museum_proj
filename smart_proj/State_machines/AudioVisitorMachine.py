@@ -1,9 +1,12 @@
+import logging
+
 from smart_proj.State_machines.Observer import Observer
 from smart_proj.Sensors.Sensor import Sensor
 from statemachine import State
 
 
 class AudioVisitorMachine(Observer):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = State('Wait', initial=True)
     playing_track_u18 = State('Playing track for u18')
     playing_track_o18 = State('Playing track for o18')
@@ -19,23 +22,23 @@ class AudioVisitorMachine(Observer):
         self.actuator = audio
 
     def on_play_track_u18(self):
-        print("Acceso")
+        logging.info("Acceso")
         self.actuator.turn_on()
 
     def on_turn_off_track_u18(self):
-        print("Spento")
+        logging.info("Spento")
         self.actuator.turn_off()
 
     def on_play_track_o18(self):
-        print("Acceso")
+        logging.info("Acceso")
         self.actuator.turn_on()
 
     def on_turn_off_track_o18(self):
-        print("Spento")
+        logging.info("Spento")
         self.actuator.turn_off()
 
     def update(self, subject: Sensor):
-        print("AudioVisitor received new sensor value", subject.current_state.name)
+        logging.info("AudioVisitor received new sensor value:" + subject.current_state.name)
         if "Empty" == subject.current_state.name:
             if "Wait" == self.current_state.name:
                 pass

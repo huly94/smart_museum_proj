@@ -1,9 +1,12 @@
+import logging
+
 from smart_proj.State_machines.Observer import Observer
 from smart_proj.Sensors.Sensor import Sensor
 from statemachine import State
 
 
 class LightsManagingMachine(Observer):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     lights_off = State('Lights off', initial=True)
     lights_on_for_visitors = State('Lights on for visitors')
     lights_on_for_clouds = State('Lights on for clouds')
@@ -22,31 +25,31 @@ class LightsManagingMachine(Observer):
         self.actuator = lights
 
     def on_turn_the_lights_on_visitor(self):
-        print("luci accese per visitatore")
+        logging.info("luci accese per visitatore")
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_visitor(self):
-        print("luci spente per visitatore")
+        logging.info("luci spente per visitatore")
         self.actuator.turn_off()
 
     def on_turn_the_lights_on_clouds(self):
-        print("luci accese per nuvole")
+        logging.info("luci accese per nuvole")
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_clouds(self):
-        print("luci spente per nuvole")
+        logging.info("luci spente per nuvole")
         self.actuator.turn_off()
 
     def on_turn_the_lights_on_night(self):
-        print("luci accese notte")
+        logging.info("luci accese notte")
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_night(self):
-        print("luci spente")
+        logging.info("luci spente")
         self.actuator.turn_off()
 
     def update(self, subject: Sensor):
-        print("LightsManaging received new sensor value", subject.current_state.name)
+        logging.info("LightsManaging received new sensor value:" + subject.current_state.name)
         if 'Empty' == subject.current_state.name:
             if 'Lights off' == self.current_state.name:
                 pass

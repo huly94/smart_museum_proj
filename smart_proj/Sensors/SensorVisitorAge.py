@@ -1,8 +1,11 @@
+import logging
+
 from statemachine import State
 from smart_proj.Sensors.Sensor import Sensor
 
 
 class SensorVisitorAge(Sensor):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     empty = State('Empty', initial= True)
     non_empty_u18 = State('Non Empty u18')
     non_empty_o18 = State('Non Empty o18')
@@ -16,15 +19,15 @@ class SensorVisitorAge(Sensor):
         super().__init__()
 
     def on_enter_non_empty_u18(self):
-        print("A new visitor u18 has arrived, new state:", self.current_state.name)
+        logging.info("[SENSOR VISITOR AGE]: A new visitor u18 has arrived, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_non_empty_o18(self):
-        print("A new visitor o18 has arrived, new state:", self.current_state.name)
+        logging.info("[SENSOR VISITOR AGE]: A new visitor o18 has arrived, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_empty(self):
-        print("Visitor has left, new state:", self.current_state.name)
+        logging.info("[SENSOR VISITOR AGE]: Visitor has left, new state:" + self.current_state.name)
         self.notify()
 
 

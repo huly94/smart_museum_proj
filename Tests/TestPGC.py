@@ -1,3 +1,5 @@
+import logging
+
 from smart_proj.Actuators.ActuatorMobile import ActuatorMobile
 from smart_proj.Actuators.ActuatorWall import ActuatorWall
 from smart_proj.Sensors.SensorColors import SensorColors
@@ -19,4 +21,7 @@ if __name__ == '__main__':
     mySensor.run("blue_detected")
     mySensorGesture.run("gesture_detected")
     mySensorGesture.run("gesture_detected")
+    mySensorGesture.run("no_gesture")
+
+
 

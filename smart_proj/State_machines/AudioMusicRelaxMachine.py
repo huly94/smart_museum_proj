@@ -1,3 +1,5 @@
+import logging
+
 from statemachine import State
 
 from smart_proj.Sensors.Sensor import Sensor
@@ -5,6 +7,7 @@ from smart_proj.State_machines.Observer import Observer
 
 
 class AudioMusicRelaxMachine(Observer):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = State('Wait', initial=True)
     sound_on = State('Sound on')
 
@@ -17,15 +20,15 @@ class AudioMusicRelaxMachine(Observer):
         self.actuator = audio
 
     def on_play_relaxing_music(self):
-        print("riproduco musica rilassante")
+        logging.info("riproduco musica rilassante")
         self.actuator.turn_on()
 
     def on_turn_off_music(self):
-        print("Spengo musica")
+        logging.info("Spengo musica")
         self.actuator.turn_off()
 
     def update(self, subject: Sensor):
-        print("AudioMusic received new sensor value", subject.current_state.name)
+        logging.info("AudioMusic received new sensor value" + subject.current_state.name)
         if "Empty" == subject.current_state.name:
             if "Wait" == self.current_state.name:
                 pass

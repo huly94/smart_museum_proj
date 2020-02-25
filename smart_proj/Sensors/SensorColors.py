@@ -1,9 +1,12 @@
+import logging
+
 from statemachine import State
 
 from smart_proj.Sensors.Sensor import Sensor
 
 
 class SensorColors(Sensor):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     off = State('Off', initial=True)
     blue = State('Blue')
     red = State('Red')
@@ -18,17 +21,17 @@ class SensorColors(Sensor):
         super().__init__()
 
     def on_enter_blue(self):
-        print("Color detected, new state:", self.current_state.name)
+        logging.info("[SENSOR COLOR]: Color detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_red(self):
-        print("Color detected, new state:", self.current_state.name)
+        logging.info("[SENSOR COLOR]: Color detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_green(self):
-        print("Color detected, new state:", self.current_state.name)
+        logging.info("[SENSOR COLOR]: Color detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_off(self):
-        print("No color detected, new state:", self.current_state.name)
+        logging.info("[SENSOR COLOR]: No color detected, new state:" + self.current_state.name)
         self.notify()

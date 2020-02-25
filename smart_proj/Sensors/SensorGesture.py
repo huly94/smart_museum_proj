@@ -1,9 +1,12 @@
+import logging
+
 from statemachine import State
 
 from smart_proj.Sensors.Sensor import Sensor
 
 
 class SensorGesture(Sensor):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     not_detected = State('Not Detected', initial= True)
     detected = State('Detected')
 
@@ -14,9 +17,9 @@ class SensorGesture(Sensor):
         super().__init__()
 
     def on_enter_not_detected(self):
-        print("No gesture detected, new state:", self.current_state.name)
+        logging.info("[SENSOR GESTURE]:No gesture detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_detected(self):
-        print("Gesture detected, new state:", self.current_state.name)
+        logging.info("[SENSOR GESTURE]Gesture detected, new state:" + self.current_state.name)
         self.notify()

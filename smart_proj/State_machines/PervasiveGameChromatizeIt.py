@@ -1,3 +1,4 @@
+import logging
 from statemachine import State
 
 from smart_proj.Sensors.Sensor import Sensor
@@ -5,6 +6,7 @@ from smart_proj.State_machines.Observer import Observer
 
 
 class PervasiveGameChromatizeIt(Observer):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = State('Wait', initial=True)
     blue_taken = State('Blue taken')
     red_taken = State('Red taken')
@@ -21,41 +23,50 @@ class PervasiveGameChromatizeIt(Observer):
     paint_wall_green = green_taken.to(wall_green) | wall_green.to(wall_green)
     paint_wall_blue = blue_taken.to(wall_blue) | wall_blue.to(wall_blue)
 
+    restart = wall_red.to(wait) | wall_green.to(wait) | wall_blue.to(wait)
+
     actuator_mobile = None
     actuator_wall = None
 
     def attach_mobile(self, mobile):
         self.actuator_mobile = mobile
 
+
     def attach_wall(self, wall):
         self.actuator_wall = wall
 
     def on_set_color_blue(self):
-        print("blue")
+        logging.info("New State: blue")
         self.actuator_mobile.turn_on()
 
     def on_set_color_red(self):
-        print("red")
+        logging.info("New State: red")
         self.actuator_mobile.turn_on()
 
     def on_set_color_green(self):
-        print("green")
+        logging.info("New State: green")
         self.actuator_mobile.turn_on()
 
     def on_paint_wall_red(self):
-        print("wall red")
+        logging.info("New State: wall red")
         self.actuator_wall.turn_on()
 
     def on_paint_wall_blue(self):
-        print("wall blue")
+        logging.info("New State: wall blue")
         self.actuator_wall.turn_on()
 
     def on_paint_wall_green(self):
-        print("wall blue")
+        logging.info("New State: wall blue")
         self.actuator_wall.turn_on()
 
+    def on_restart(self):
+        logging.info("New State: Wait")
+        self.actuator_wall.turn_off()
+        self.actuator_mobile.turn_off()
+
     def update(self, subject: Sensor):
-        print("ChromatizeIt received a new sensor value", subject.current_state.name)
+        logging.info("ChromatizeIt received a new sensor value:" + subject.current_state.name)
+
         if "Blue" == subject.current_state.name:
             self.set_color_blue()
 
@@ -74,6 +85,10 @@ class PervasiveGameChromatizeIt(Observer):
                 self.paint_wall_green()
             else:
                 pass
+
+        elif "Not Detected" == subject.current_state.name:
+            if "Wall painted blue" == self.current_state.name or "Wall painted red" == self.current_state.name or "Wall painted green" == self.current_state.name:
+                self.restart()
 
 
 

@@ -1,3 +1,5 @@
+import logging
+
 from statemachine import State
 
 from smart_proj.Sensors.Sensor import Sensor
@@ -5,6 +7,7 @@ from smart_proj.State_machines.Observer import Observer
 
 
 class AudioMoreInformationMachine(Observer):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = State('Wait', initial=True)
     more_info_provided = State('More informations provided')
 
@@ -19,19 +22,19 @@ class AudioMoreInformationMachine(Observer):
         self.actuator = audio
 
     def on_play_another_track(self):
-        print("Time out, riproduco un'altra traccia")
+        logging.info("Time out, riproduco un'altra traccia")
         self.actuator.turn_on()
 
     def on_turn_off(self):
-        print("Spento")
+        logging.info("Spento")
         self.actuator.turn_off()
 
     def update(self, subject: Sensor):
-        print("AudioMoreInformation recieved a new sensor value", subject.current_state.name)
+        logging.info("AudioMoreInformation recieved a new sensor value:" + subject.current_state.name)
         if "Empty" == subject.current_state.name:
             if "Wait" == self.current_state.name:
                 self.visitor = False
-                print("no extra audio")
+                logging.info("no extra audio")
             elif self.visitor:
                 self.turn_off()
                 self.visitor = False
@@ -41,7 +44,7 @@ class AudioMoreInformationMachine(Observer):
         elif "Non Empty" == subject.current_state.name:
             if "Wait" == self.current_state.name:
                 self.visitor = True
-                print("Waiting for timer...")
+                logging.info("Waiting for timer...")
             else:
                 pass
 

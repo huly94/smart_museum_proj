@@ -1,8 +1,11 @@
+import logging
+
 from statemachine import State
 from smart_proj.Sensors.Sensor import Sensor
 
 
 class SensorWeather(Sensor):
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     sunny = State('Sunny', initial=True)
     cloud = State('Cloud')
 
@@ -13,9 +16,9 @@ class SensorWeather(Sensor):
         super().__init__()
 
     def on_enter_cloud(self):
-        print("Clouds arrived, new state:", self.current_state.name)
+        logging.info("[SENSOR WEATHER]: Clouds arrived, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_sunny(self):
-        print("Sun arrived, new state:", self.current_state.name)
+        logging.info("[SENSOR WEATHER]: Sun arrived, new state:" + self.current_state.name)
         self.notify()
