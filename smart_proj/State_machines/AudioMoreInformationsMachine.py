@@ -1,15 +1,13 @@
 import logging
-
-from statemachine import State
-
-from smart_proj.Sensors.Sensor import Sensor
-from smart_proj.State_machines.Observer import Observer
+import statemachine
+import smart_proj.Sensors.Sensor
+import smart_proj.State_machines.Observer
 
 
-class AudioMoreInformationMachine(Observer):
+class AudioMoreInformationMachine(smart_proj.State_machines.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    wait = State('Wait', initial=True)
-    more_info_provided = State('More informations provided')
+    wait = statemachine.State('Wait', initial=True)
+    more_info_provided = statemachine.State('More informations provided')
 
     play_another_track = wait.to(more_info_provided)
     turn_off = more_info_provided.to(wait)
@@ -18,7 +16,7 @@ class AudioMoreInformationMachine(Observer):
 
     actuator = None
 
-    def attach_audio(self, audio):
+    def attach(self, audio):
         self.actuator = audio
 
     def on_play_another_track(self):
@@ -29,7 +27,7 @@ class AudioMoreInformationMachine(Observer):
         logging.info("Spento")
         self.actuator.turn_off()
 
-    def update(self, subject: Sensor):
+    def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioMoreInformation recieved a new sensor value:" + subject.current_state.name)
         if "Empty" == subject.current_state.name:
             if "Wait" == self.current_state.name:

@@ -1,8 +1,8 @@
-from statemachine import StateMachine
-from smart_proj.Sensors import Sensor
+import statemachine
+import smart_proj.Sensors
 
 
-class Observer(StateMachine):
+class Observer(statemachine.StateMachine):
 
-    def update(self, subject: Sensor) -> None:
+    def update(self, subject: smart_proj.Sensors.Sensor) -> None:
         pass

@@ -1,13 +1,12 @@
 import logging
+import smart_proj.Sensors.Sensor
+import statemachine
 
-from smart_proj.Sensors.Sensor import Sensor
-from statemachine import State
 
-
-class SensorClock(Sensor):
+class SensorClock(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    day = State("Morning", initial=True)
-    night = State("Night")
+    day = statemachine.State("Morning", initial=True)
+    night = statemachine.State("Night")
 
     day_to_night = day.to(night)
     night_to_day = night.to(day)

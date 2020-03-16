@@ -1,19 +1,19 @@
 import logging
-from statemachine import State
+import statemachine
 
-from smart_proj.Sensors.Sensor import Sensor
-from smart_proj.State_machines.Observer import Observer
+import smart_proj.Sensors.Sensor
+import smart_proj.State_machines.Observer
 
 
-class PervasiveGameChromatizeIt(Observer):
+class PervasiveGameChromatizeIt(smart_proj.State_machines.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    wait = State('Wait', initial=True)
-    blue_taken = State('Blue taken')
-    red_taken = State('Red taken')
-    green_taken = State('Green taken')
-    wall_green = State('Wall painted green')
-    wall_blue = State('Wall painted blue')
-    wall_red = State('Wall painted red')
+    wait = statemachine.State('Wait', initial=True)
+    blue_taken = statemachine.State('Blue taken')
+    red_taken = statemachine.State('Red taken')
+    green_taken = statemachine.State('Green taken')
+    wall_green = statemachine.State('Wall painted green')
+    wall_blue = statemachine.State('Wall painted blue')
+    wall_red = statemachine.State('Wall painted red')
 
     set_color_blue = wait.to(blue_taken) | red_taken.to(blue_taken) | green_taken.to(blue_taken)
     set_color_red = wait.to(red_taken) | blue_taken.to(red_taken) | green_taken.to(red_taken)
@@ -64,7 +64,7 @@ class PervasiveGameChromatizeIt(Observer):
         self.actuator_wall.turn_off()
         self.actuator_mobile.turn_off()
 
-    def update(self, subject: Sensor):
+    def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("ChromatizeIt received a new sensor value:" + subject.current_state.name)
 
         if "Blue" == subject.current_state.name:

@@ -1,12 +1,11 @@
-from statemachine import StateMachine, State
+import statemachine
+import smart_proj.Actuators.Actuator
 
 
-class ActuatorAudio(StateMachine):
-    off = State('off', initial=True)
-    on = State('on')
+class ActuatorAudio(smart_proj.Actuators.Actuator.Actuator):
+    off = statemachine.State('off', initial=True)
+    on = statemachine.State('on')
 
     turn_on = off.to(on)
     turn_off = on.to(off)
 
-    def attach_audio(self, audio):
-        self.actuator = audio

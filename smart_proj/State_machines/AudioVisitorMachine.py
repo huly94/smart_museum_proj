@@ -1,15 +1,14 @@
 import logging
+import smart_proj.Sensors.Sensor
+import smart_proj.State_machines.Observer
+import statemachine
 
-from smart_proj.State_machines.Observer import Observer
-from smart_proj.Sensors.Sensor import Sensor
-from statemachine import State
 
-
-class AudioVisitorMachine(Observer):
+class AudioVisitorMachine(smart_proj.State_machines.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    wait = State('Wait', initial=True)
-    playing_track_u18 = State('Playing track for u18')
-    playing_track_o18 = State('Playing track for o18')
+    wait = statemachine.State('Wait', initial=True)
+    playing_track_u18 = statemachine.State('Playing track for u18')
+    playing_track_o18 = statemachine.State('Playing track for o18')
 
     play_track_u18 = wait.to(playing_track_u18)
     turn_off_track_u18 = playing_track_u18.to(wait)
@@ -18,26 +17,26 @@ class AudioVisitorMachine(Observer):
 
     actuator = None
 
-    def attach_audio(self, audio):
+    def attach(self, audio):
         self.actuator = audio
 
     def on_play_track_u18(self):
-        logging.info("Acceso")
+        logging.info("Playing track for u18")
         self.actuator.turn_on()
 
     def on_turn_off_track_u18(self):
-        logging.info("Spento")
+        logging.info("Turning off")
         self.actuator.turn_off()
 
     def on_play_track_o18(self):
-        logging.info("Acceso")
+        logging.info("Playing track for o18")
         self.actuator.turn_on()
 
     def on_turn_off_track_o18(self):
-        logging.info("Spento")
+        logging.info("Turning off")
         self.actuator.turn_off()
 
-    def update(self, subject: Sensor):
+    def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioVisitor received new sensor value:" + subject.current_state.name)
         if "Empty" == subject.current_state.name:
             if "Wait" == self.current_state.name:
@@ -59,5 +58,3 @@ class AudioVisitorMachine(Observer):
                 self.play_track_o18()
             else:
                 pass
-
-

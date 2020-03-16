@@ -1,14 +1,13 @@
 import logging
+import statemachine
+import smart_proj.Sensors.Sensor
 
-from statemachine import State
-from smart_proj.Sensors.Sensor import Sensor
 
-
-class SensorVisitorAge(Sensor):
+class SensorVisitorAge(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    empty = State('Empty', initial= True)
-    non_empty_u18 = State('Non Empty u18')
-    non_empty_o18 = State('Non Empty o18')
+    empty = statemachine.State('Empty', initial= True)
+    non_empty_u18 = statemachine.State('Non Empty u18')
+    non_empty_o18 = statemachine.State('Non Empty o18')
 
     visitor_u18_arrived = empty.to(non_empty_u18)
     visitor_o18_arrived = empty.to(non_empty_o18)

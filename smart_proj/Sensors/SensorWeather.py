@@ -1,13 +1,12 @@
 import logging
+import statemachine
+import smart_proj.Sensors.Sensor
 
-from statemachine import State
-from smart_proj.Sensors.Sensor import Sensor
 
-
-class SensorWeather(Sensor):
+class SensorWeather(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    sunny = State('Sunny', initial=True)
-    cloud = State('Cloud')
+    sunny = statemachine.State('Sunny', initial=True)
+    cloud = statemachine.State('Cloud')
 
     bad_weather = sunny.to(cloud)
     good_weather = cloud.to(sunny)

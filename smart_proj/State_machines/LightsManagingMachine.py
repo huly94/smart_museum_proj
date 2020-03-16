@@ -1,16 +1,16 @@
 import logging
 
-from smart_proj.State_machines.Observer import Observer
-from smart_proj.Sensors.Sensor import Sensor
-from statemachine import State
+import smart_proj.State_machines.Observer
+import smart_proj.Sensors.Sensor
+import statemachine
 
 
-class LightsManagingMachine(Observer):
+class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    lights_off = State('Lights off', initial=True)
-    lights_on_for_visitors = State('Lights on for visitors')
-    lights_on_for_clouds = State('Lights on for clouds')
-    lights_on_for_night = State('Lights on for night')
+    lights_off = statemachine.State('Lights off', initial=True)
+    lights_on_for_visitors = statemachine.State('Lights on for visitors')
+    lights_on_for_clouds = statemachine.State('Lights on for clouds')
+    lights_on_for_night = statemachine.State('Lights on for night')
 
     turn_the_lights_on_visitor = lights_off.to(lights_on_for_visitors)
     turn_the_lights_off_visitor = lights_on_for_visitors.to(lights_off)
@@ -21,7 +21,7 @@ class LightsManagingMachine(Observer):
 
     actuator = None
 
-    def attach_lights(self, lights):
+    def attach(self, lights):
         self.actuator = lights
 
     def on_turn_the_lights_on_visitor(self):
@@ -48,7 +48,7 @@ class LightsManagingMachine(Observer):
         logging.info("luci spente")
         self.actuator.turn_off()
 
-    def update(self, subject: Sensor):
+    def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("LightsManaging received new sensor value:" + subject.current_state.name)
         if 'Empty' == subject.current_state.name:
             if 'Lights off' == self.current_state.name:
@@ -56,7 +56,8 @@ class LightsManagingMachine(Observer):
             else:
                 self.turn_the_lights_off_visitor()
 
-        elif 'Non Empty' == subject.current_state.name:
+        elif 'Non Empty' == subject.current_state.name or 'Non Empty u18' == subject.current_state.name \
+                or 'Non Empty o18' == subject.current_state.name:
             if 'Lights off' == self.current_state.name:
                 self.turn_the_lights_on_visitor()
             else:

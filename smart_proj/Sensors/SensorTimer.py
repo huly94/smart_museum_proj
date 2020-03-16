@@ -1,14 +1,12 @@
 import logging
-
-from statemachine import State
-
-from smart_proj.Sensors.Sensor import Sensor
+import statemachine
+import smart_proj.Sensors.Sensor
 
 
-class SensorTimer(Sensor):
+class SensorTimer(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    timer_waiting = State('Timer waiting', initial=True)
-    timer_expired = State('Timer expired')
+    timer_waiting = statemachine.State('Timer waiting', initial=True)
+    timer_expired = statemachine.State('Timer expired')
 
     end_timer = timer_waiting.to(timer_expired)
     reset = timer_expired.to(timer_waiting)

@@ -1,22 +1,22 @@
 import logging
 
-from statemachine import State
+import statemachine
 
-from smart_proj.Sensors.Sensor import Sensor
-from smart_proj.State_machines.Observer import Observer
+import smart_proj.Sensors.Sensor
+import smart_proj.State_machines.Observer
 
 
-class LightGuideVisitorMachine(Observer):
+class LightGuideVisitorMachine(smart_proj.State_machines.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    colored_light_off_on_a_related_painting = State('Colored light off', initial=True)
-    colored_light_on_on_a_related_painting = State('Colored light on')
+    colored_light_off_on_a_related_painting = statemachine.State('Colored light off', initial=True)
+    colored_light_on_on_a_related_painting = statemachine.State('Colored light on')
 
     switch_on_colored_light = colored_light_off_on_a_related_painting.to(colored_light_on_on_a_related_painting)
     switch_off_light = colored_light_on_on_a_related_painting.to(colored_light_off_on_a_related_painting)
 
     actuator = None
 
-    def attach_lights(self, light):
+    def attach(self, light):
         self.actuator = light
 
     def on_switch_on_colored_light(self):
@@ -27,7 +27,7 @@ class LightGuideVisitorMachine(Observer):
         logging.info("Switch off light")
         self.actuator.turn_off()
 
-    def update(self, subject: Sensor):
+    def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioMusic received new sensor value:" + subject.current_state.name)
         if "Mobile waiting" == subject.current_state.name:
             if "Colored light off" == self.current_state.name:

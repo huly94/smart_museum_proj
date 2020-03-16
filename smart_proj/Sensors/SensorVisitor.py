@@ -1,14 +1,12 @@
 import logging
-
-from statemachine import State
-
-from smart_proj.Sensors.Sensor import Sensor
+import statemachine
+import smart_proj.Sensors.Sensor
 
 
-class SensorVisitor(Sensor):
+class SensorVisitor(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    empty = State('Empty', initial=True)
-    non_empty = State('Non Empty')
+    empty = statemachine.State('Empty', initial=True)
+    non_empty = statemachine.State('Non Empty')
 
     visitor_arrived = empty.to(non_empty)
     visitor_left = non_empty.to(empty)

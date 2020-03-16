@@ -1,22 +1,22 @@
 import logging
 
-from statemachine import State
+import statemachine
 
-from smart_proj.Sensors.Sensor import Sensor
-from smart_proj.State_machines.Observer import Observer
+import smart_proj.Sensors.Sensor
+import smart_proj.State_machines.Observer
 
 
-class InteractiveWorkMachine(Observer):
+class InteractiveWorkMachine(smart_proj.State_machines.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    wait = State('Wait', initial=True)
-    work_animated = State('Work animated')
+    wait = statemachine.State('Wait', initial=True)
+    work_animated = statemachine.State('Work animated')
 
     animate_work = wait.to(work_animated)
     stop = work_animated.to(wait)
 
     actuator = None
 
-    def attach_painting(self, paint):
+    def attach(self, paint):
         self.actuator = paint
 
     def on_animate_work(self):
@@ -27,7 +27,7 @@ class InteractiveWorkMachine(Observer):
         logging.info("Stop")
         self.actuator.turn_off()
 
-    def update(self, subject: Sensor):
+    def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("InteractiveWork received new sensor value:" + subject.current_state.name)
         if "Empty" == subject.current_state.name:
             if "Wait" == self.current_state.name:

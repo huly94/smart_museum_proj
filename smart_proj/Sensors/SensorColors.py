@@ -1,16 +1,16 @@
 import logging
 
-from statemachine import State
+import statemachine
 
-from smart_proj.Sensors.Sensor import Sensor
+import smart_proj.Sensors.Sensor
 
 
-class SensorColors(Sensor):
+class SensorColors(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    off = State('Off', initial=True)
-    blue = State('Blue')
-    red = State('Red')
-    green = State('Green')
+    off = statemachine.State('Off', initial=True)
+    blue = statemachine.State('Blue')
+    red = statemachine.State('Red')
+    green = statemachine.State('Green')
 
     blue_detected = off.to(blue) | red.to(blue) | green.to(blue)
     red_detected = off.to(red) | blue.to(red) | green.to(red)

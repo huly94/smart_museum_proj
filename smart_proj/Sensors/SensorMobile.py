@@ -1,14 +1,14 @@
 import logging
 
-from statemachine import State
+import statemachine
 
-from smart_proj.Sensors.Sensor import Sensor
+import smart_proj.Sensors.Sensor
 
 
-class SensorMobile(Sensor):
+class SensorMobile(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    mobile_waiting = State('Mobile waiting', initial=True)
-    signal_received = State('Signal received')
+    mobile_waiting = statemachine.State('Mobile waiting', initial=True)
+    signal_received = statemachine.State('Signal received')
 
     signal_sent = mobile_waiting.to(signal_received)
     reset = signal_received.to(mobile_waiting)

@@ -1,14 +1,12 @@
 import logging
-
-from statemachine import State
-
-from smart_proj.Sensors.Sensor import Sensor
+import statemachine
+import smart_proj.Sensors.Sensor
 
 
-class SensorGesture(Sensor):
+class SensorGesture(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    not_detected = State('Not Detected', initial= True)
-    detected = State('Detected')
+    not_detected = statemachine.State('Not Detected', initial= True)
+    detected = statemachine.State('Detected')
 
     gesture_detected = not_detected.to(detected) | detected.to(detected)
     no_gesture = detected.to(not_detected)
