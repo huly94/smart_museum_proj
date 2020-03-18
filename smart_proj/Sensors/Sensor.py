@@ -5,6 +5,10 @@ class Sensor(statemachine.StateMachine):
 
     def __init__(self):
         super().__init__()
+        self.area = ""
+
+    def setArea(self, r):
+        self.area = r
 
     # self._observers = []
 
