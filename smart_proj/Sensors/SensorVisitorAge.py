@@ -9,8 +9,8 @@ class SensorVisitorAge(smart_proj.Sensors.Sensor.Sensor):
     non_empty_u18 = statemachine.State('Non Empty u18')
     non_empty_o18 = statemachine.State('Non Empty o18')
 
-    visitor_u18_arrived = empty.to(non_empty_u18)
-    visitor_o18_arrived = empty.to(non_empty_o18)
+    visitor_u18_arrived = empty.to(non_empty_u18) | non_empty_u18.to(non_empty_u18) | non_empty_o18.to(non_empty_u18)
+    visitor_o18_arrived = empty.to(non_empty_o18) | non_empty_o18.to(non_empty_o18) | non_empty_u18.to(non_empty_o18)
     visitor_o18_left = non_empty_o18.to(empty)
     visitor_u18_left = non_empty_u18.to(empty)
 

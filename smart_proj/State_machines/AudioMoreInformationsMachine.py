@@ -16,6 +16,11 @@ class AudioMoreInformationMachine(smart_proj.State_machines.Observer.Observer):
 
     actuator = None
 
+    user = None
+
+    def set_user(self, u):
+        self.user = u
+
     def attach(self, audio):
         self.actuator = audio
 
@@ -29,35 +34,36 @@ class AudioMoreInformationMachine(smart_proj.State_machines.Observer.Observer):
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioMoreInformation recieved a new sensor value:" + subject.current_state.name)
-        if "Empty" == subject.current_state.name:
-            if "Wait" == self.current_state.name:
-                self.visitor = False
-                logging.info("no extra audio")
-            elif self.visitor:
-                self.turn_off()
-                self.visitor = False
-            else:
-                pass
+        if subject.user == self.user:
+            if "Empty" == subject.current_state.name:
+                if "Wait" == self.current_state.name:
+                    self.visitor = False
+                    logging.info("no extra audio")
+                elif self.visitor:
+                    self.turn_off()
+                    self.visitor = False
+                else:
+                    pass
 
-        elif "Non Empty" == subject.current_state.name:
-            if "Wait" == self.current_state.name:
-                self.visitor = True
-                logging.info("Waiting for timer...")
-            else:
-                pass
+            elif "Non Empty" == subject.current_state.name:
+                if "Wait" == self.current_state.name:
+                    self.visitor = True
+                    logging.info("Waiting for timer...")
+                else:
+                    pass
 
-        elif "Timer waiting" == subject.current_state.name:
-            if "Wait" == self.current_state.name:
-                pass
-            else:
-                self.turn_off()
-                self.visitor = False
+            elif "Timer waiting" == subject.current_state.name:
+                if "Wait" == self.current_state.name:
+                    pass
+                else:
+                    self.turn_off()
+                    self.visitor = False
 
-        elif "Timer expired" == subject.current_state.name:
-            if "Wait" == self.current_state.name and self.visitor:
-                self.play_another_track()
-            else:
-                pass
+            elif "Timer expired" == subject.current_state.name:
+                if "Wait" == self.current_state.name and self.visitor:
+                    self.play_another_track()
+                else:
+                    pass
 
 
 

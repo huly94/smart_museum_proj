@@ -13,6 +13,10 @@ class MobileSuggestionsMachine(smart_proj.State_machines.Observer.Observer):
     reset = suggestions_received.to(wait)
 
     actuator = None
+    user = None
+
+    def set_user(self, u):
+        self.user = u
 
     def attach(self,mobile):
         self.actuator = mobile

@@ -16,6 +16,11 @@ class LightGuideVisitorMachine(smart_proj.State_machines.Observer.Observer):
 
     actuator = None
 
+    user = None
+
+    def set_user(self, u):
+        self.user = u
+
     def attach(self, light):
         self.actuator = light
 
@@ -29,13 +34,14 @@ class LightGuideVisitorMachine(smart_proj.State_machines.Observer.Observer):
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioMusic received new sensor value:" + subject.current_state.name)
-        if "Mobile waiting" == subject.current_state.name:
-            if "Colored light off" == self.current_state.name:
-                pass
-            else:
-                self.switch_off_light()
-        if "Signal received" == subject.current_state.name:
-            if "Colored light off" == self.current_state.name:
-                self.switch_on_colored_light()
-            else:
-                pass
+        if subject.user == self.user:
+            if "Mobile waiting" == subject.current_state.name:
+                if "Colored light off" == self.current_state.name:
+                    pass
+                else:
+                    self.switch_off_light()
+            if "Signal received" == subject.current_state.name:
+                if "Colored light off" == self.current_state.name:
+                    self.switch_on_colored_light()
+                else:
+                    pass

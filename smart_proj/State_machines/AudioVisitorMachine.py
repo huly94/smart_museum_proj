@@ -16,6 +16,10 @@ class AudioVisitorMachine(smart_proj.State_machines.Observer.Observer):
     turn_off_track_o18 = playing_track_o18.to(wait)
 
     actuator = None
+    user = None
+
+    def set_user(self, u):
+        self.user = u
 
     def attach(self, audio):
         self.actuator = audio
@@ -38,23 +42,24 @@ class AudioVisitorMachine(smart_proj.State_machines.Observer.Observer):
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioVisitor received new sensor value:" + subject.current_state.name)
-        if "Empty" == subject.current_state.name:
-            if "Wait" == self.current_state.name:
-                pass
-            else:
-                try:
-                    self.turn_off_track_o18()
-                except:
-                    self.turn_off_track_u18()
+        if subject.user == self.user:
+            if "Empty" == subject.current_state.name:
+                if "Wait" == self.current_state.name:
+                    pass
+                else:
+                    try:
+                        self.turn_off_track_o18()
+                    except:
+                        self.turn_off_track_u18()
 
-        elif "Non Empty u18" == subject.current_state.name:
-            if "Wait" == self.current_state.name:
-                self.play_track_u18()
-            else:
-                pass
+            elif "Non Empty u18" == subject.current_state.name:
+                if "Wait" == self.current_state.name:
+                    self.play_track_u18()
+                else:
+                    pass
 
-        elif "Non Empty o18" == subject.current_state.name:
-            if "Wait" == self.current_state.name:
-                self.play_track_o18()
-            else:
-                pass
+            elif "Non Empty o18" == subject.current_state.name:
+                if "Wait" == self.current_state.name:
+                    self.play_track_o18()
+                else:
+                    pass

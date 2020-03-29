@@ -19,7 +19,10 @@ class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
     turn_the_lights_on_night = lights_off.to(lights_on_for_night)
     turn_the_lights_off_night = lights_on_for_night.to(lights_off)
 
+    visitors = 0
+
     actuator = None
+    user = None
 
     def attach(self, lights):
         self.actuator = lights
@@ -51,15 +54,20 @@ class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("LightsManaging received new sensor value:" + subject.current_state.name)
         if 'Empty' == subject.current_state.name:
+            self.visitors -= 1
             if 'Lights off' == self.current_state.name:
+                pass
+            elif self.visitors > 0:
                 pass
             else:
                 self.turn_the_lights_off_visitor()
 
         elif 'Non Empty' == subject.current_state.name or 'Non Empty u18' == subject.current_state.name \
                 or 'Non Empty o18' == subject.current_state.name:
+            self.visitors += 1
             if 'Lights off' == self.current_state.name:
                 self.turn_the_lights_on_visitor()
+
             else:
                 pass
 
@@ -86,14 +94,3 @@ class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
                 self.turn_the_lights_on_night()
             else:
                 pass
-
-
-
-
-
-
-
-
-
-
-

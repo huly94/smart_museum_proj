@@ -6,9 +6,13 @@ class Sensor(statemachine.StateMachine):
     def __init__(self):
         super().__init__()
         self.area = ""
+        self.user = ""
 
     def setArea(self, r):
         self.area = r
+
+    def set_user(self, u):
+        self.user = u
 
     # self._observers = []
 
