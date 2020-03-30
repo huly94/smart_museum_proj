@@ -31,6 +31,10 @@ class AudioMoreInformationMachine(smart_proj.State_machines.Observer.Observer):
     def on_turn_off(self):
         logging.info("Spento")
         self.actuator.turn_off()
+        app = self
+        import smart_proj.Orchestrator.Orchestrator
+        smart_proj.Orchestrator.Orchestrator.Orchestrator. \
+            remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioMoreInformation recieved a new sensor value:" + subject.current_state.name)

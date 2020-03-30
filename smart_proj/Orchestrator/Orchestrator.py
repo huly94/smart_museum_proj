@@ -27,4 +27,3 @@ class Orchestrator(smart_proj.Orchestrator.Singleton.Singleton):
         for observer in self._observers:
             observer.update(subject)
 
-

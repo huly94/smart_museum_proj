@@ -29,16 +29,24 @@ class AudioVisitorMachine(smart_proj.State_machines.Observer.Observer):
         self.actuator.turn_on()
 
     def on_turn_off_track_u18(self):
+        import smart_proj.Orchestrator.Orchestrator
         logging.info("Turning off")
         self.actuator.turn_off()
+        app = self
+        smart_proj.Orchestrator.Orchestrator.Orchestrator.\
+            remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)
 
     def on_play_track_o18(self):
         logging.info("Playing track for o18")
         self.actuator.turn_on()
 
     def on_turn_off_track_o18(self):
+        import smart_proj.Orchestrator.Orchestrator
         logging.info("Turning off")
         self.actuator.turn_off()
+        app = self
+        smart_proj.Orchestrator.Orchestrator.Orchestrator. \
+            remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioVisitor received new sensor value:" + subject.current_state.name)

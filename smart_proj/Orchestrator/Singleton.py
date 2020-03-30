@@ -66,6 +66,11 @@ class Singleton:
                 break
         return found
 
+    def remove_app(self, app):
+        for obs in self._observers:
+            if obs.user == app.user and obs.__class__ == app.__class__:
+                self.detach(obs)
+
     def attach(self, observer):
         self._observers.append(observer)
 
