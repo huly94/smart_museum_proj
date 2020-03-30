@@ -12,19 +12,19 @@ class Singleton:
         return Singleton.__instance
 
     def __init__(self):
-        import smart_proj.State_machines.AudioVisitorMachine
-        import smart_proj.State_machines.LightsManagingMachine
-        import smart_proj.State_machines.InteractiveWorkMachine
-        import smart_proj.State_machines.LightGiudeVisitorMachine
-        import smart_proj.State_machines.AudioMusicRelaxMachine
-        import smart_proj.State_machines.AudioMoreInformationsMachine
-        import smart_proj.State_machines.MobileSuggestionsMachine
+        import smart_proj.State_machines.AudioVisitorApp
+        import smart_proj.State_machines.LightsManagingApp
+        import smart_proj.State_machines.InteractiveWorkApp
+        import smart_proj.State_machines.LightGiudeVisitorApp
+        import smart_proj.State_machines.AudioMusicRelaxApp
+        import smart_proj.State_machines.AudioMoreInformationsApp
+        import smart_proj.State_machines.MobileSuggestionsApp
         import smart_proj.Actuators.ActuatorAudio
         import smart_proj.Actuators.ActuatorLights
         import smart_proj.Actuators.ActuatorPainting
         import smart_proj.Actuators.ActuatorMobile
 
-        lightApp = smart_proj.State_machines.LightsManagingMachine.LightsManagingMachine()
+        lightApp = smart_proj.State_machines.LightsManagingApp.LightsManagingMachine()
         ligths = smart_proj.Actuators.ActuatorLights.ActuatorLights()
         lightApp.attach(ligths)
         """ Virtually private constructor. """
@@ -34,12 +34,12 @@ class Singleton:
             Singleton.__instance = self
             self._observers = [lightApp]
             self.sensor_to_app = dict([
-                ("SensorVisitorAge", [smart_proj.State_machines.AudioVisitorMachine.AudioVisitorMachine]),
-                ("SensorMobile", [smart_proj.State_machines.LightGiudeVisitorMachine.LightGuideVisitorMachine]),
-                ("SensorVisitor", [smart_proj.State_machines.AudioMusicRelaxMachine.AudioMusicRelaxMachine,
-                                   smart_proj.State_machines.AudioMoreInformationsMachine.AudioMoreInformationMachine,
-                                   smart_proj.State_machines.InteractiveWorkMachine.InteractiveWorkMachine,
-                                   smart_proj.State_machines.MobileSuggestionsMachine.MobileSuggestionsMachine])
+                ("SensorVisitorAge", [smart_proj.State_machines.AudioVisitorApp.AudioVisitorMachine]),
+                ("SensorMobile", [smart_proj.State_machines.LightGiudeVisitorApp.LightGuideVisitorMachine]),
+                ("SensorVisitor", [smart_proj.State_machines.AudioMusicRelaxApp.AudioMusicRelaxMachine,
+                                   smart_proj.State_machines.AudioMoreInformationsApp.AudioMoreInformationMachine,
+                                   smart_proj.State_machines.InteractiveWorkApp.InteractiveWorkMachine,
+                                   smart_proj.State_machines.MobileSuggestionsApp.MobileSuggestionsMachine])
             ])
             self.app_to_actuators = dict([
                 ("AudioVisitorMachine", smart_proj.Actuators.ActuatorAudio.ActuatorAudio),
@@ -71,6 +71,9 @@ class Singleton:
 
     def detach(self, observer):
         self._observers.remove(observer)
+
+    def get_observers(self):
+        return self._observers
 
     def update(self, sensor: smart_proj.Sensors.Sensor.Sensor) -> None:
         pass

@@ -32,7 +32,7 @@ class AudioMusicRelaxMachine(smart_proj.State_machines.Observer.Observer):
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioMusic received new sensor value" + subject.current_state.name)
-        if subject.user == self.user:
+        if subject.user == self.user and subject.area == "Relax area":
             if subject.user == self.user:
                 if "Empty" == subject.current_state.name:
                     if "Wait" == self.current_state.name:

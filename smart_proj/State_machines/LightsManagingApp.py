@@ -24,6 +24,8 @@ class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
     actuator = None
     user = None
 
+
+
     def attach(self, lights):
         self.actuator = lights
 

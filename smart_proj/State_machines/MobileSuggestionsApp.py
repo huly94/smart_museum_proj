@@ -18,7 +18,7 @@ class MobileSuggestionsMachine(smart_proj.State_machines.Observer.Observer):
     def set_user(self, u):
         self.user = u
 
-    def attach(self,mobile):
+    def attach(self, mobile):
         self.actuator = mobile
 
     def on_send_suggestions(self):
