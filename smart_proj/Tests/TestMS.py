@@ -1,11 +1,11 @@
 import smart_proj.Actuators.ActuatorMobile
 import smart_proj.Sensors.SensorVisitor
-import smart_proj.State_machines.MobileSuggestionsApp
+import smart_proj.Apps.MobileSuggestionsApp
 
 
 if __name__ == '__main__':
 
-    myState = smart_proj.State_machines.MobileSuggestionsApp.MobileSuggestionsMachine()
+    myState = smart_proj.Apps.MobileSuggestionsApp.MobileSuggestionsMachine()
     mySensor = smart_proj.Sensors.SensorVisitor.SensorVisitor()
     mobile = smart_proj.Actuators.ActuatorMobile.ActuatorMobile()
 

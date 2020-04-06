@@ -1,9 +1,9 @@
 import smart_proj.Actuators.ActuatorPainting
 import smart_proj.Sensors.SensorVisitor
-import smart_proj.State_machines.InteractiveWorkApp
+import smart_proj.Apps.InteractiveWorkApp
 
 if __name__ == '__main__':
-    myState = smart_proj.State_machines.InteractiveWorkApp.InteractiveWorkMachine()
+    myState = smart_proj.Apps.InteractiveWorkApp.InteractiveWorkMachine()
     mySensor = smart_proj.Sensors.SensorVisitor.SensorVisitor()
     painting = smart_proj.Actuators.ActuatorPainting.ActuatorPainting()
 

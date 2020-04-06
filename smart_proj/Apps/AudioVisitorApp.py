@@ -1,10 +1,10 @@
 import logging
 import smart_proj.Sensors.Sensor
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 import statemachine
 
 
-class AudioVisitorMachine(smart_proj.State_machines.Observer.Observer):
+class AudioVisitorMachine(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     playing_track_u18 = statemachine.State('Playing track for u18')
@@ -32,6 +32,7 @@ class AudioVisitorMachine(smart_proj.State_machines.Observer.Observer):
         import smart_proj.Orchestrator.Orchestrator
         logging.info("Turning off")
         self.actuator.turn_off()
+        # when i turn the audio off i remove the app from the orchestrator
         app = self
         smart_proj.Orchestrator.Orchestrator.Orchestrator.\
             remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)

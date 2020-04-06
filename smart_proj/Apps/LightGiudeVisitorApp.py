@@ -3,10 +3,10 @@ import logging
 import statemachine
 
 import smart_proj.Sensors.Sensor
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 
 
-class LightGuideVisitorMachine(smart_proj.State_machines.Observer.Observer):
+class LightGuideVisitorMachine(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     colored_light_off_on_a_related_painting = statemachine.State('Colored light off', initial=True)
     colored_light_on_on_a_related_painting = statemachine.State('Colored light on')
@@ -32,6 +32,7 @@ class LightGuideVisitorMachine(smart_proj.State_machines.Observer.Observer):
         logging.info("Switch off light")
         self.actuator.turn_off()
         import smart_proj.Orchestrator.Orchestrator
+        # when i turn the light off i remove the app from the orchestrator
         app = self
         smart_proj.Orchestrator.Orchestrator.Orchestrator. \
             remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)

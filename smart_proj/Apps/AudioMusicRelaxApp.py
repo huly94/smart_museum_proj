@@ -1,10 +1,10 @@
 import logging
 import statemachine
 import smart_proj.Sensors.Sensor
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 
 
-class AudioMusicRelaxMachine(smart_proj.State_machines.Observer.Observer):
+class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     sound_on = statemachine.State('Sound on')
@@ -29,6 +29,7 @@ class AudioMusicRelaxMachine(smart_proj.State_machines.Observer.Observer):
     def on_turn_off_music(self):
         logging.info("Spengo musica")
         self.actuator.turn_off()
+        # when i turn off the music i remove the app from the orchestrator
         import smart_proj.Orchestrator.Orchestrator
         app = self
         smart_proj.Orchestrator.Orchestrator.Orchestrator. \
@@ -44,7 +45,7 @@ class AudioMusicRelaxMachine(smart_proj.State_machines.Observer.Observer):
                     else:
                         self.turn_off_music()
 
-                if "Non Empty" == subject.current_state.name:
+                if "Non Empty" == subject.current_state.name:   # if someone arrives
                     if "Wait" == self.current_state.name:
                         self.play_relaxing_music()
                     else:

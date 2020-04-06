@@ -1,10 +1,10 @@
 import logging
 import statemachine
 import smart_proj.Sensors.Sensor
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 
 
-class AudioMoreInformationMachine(smart_proj.State_machines.Observer.Observer):
+class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     more_info_provided = statemachine.State('More informations provided')
@@ -32,6 +32,7 @@ class AudioMoreInformationMachine(smart_proj.State_machines.Observer.Observer):
         logging.info("Spento")
         self.actuator.turn_off()
         app = self
+        # when i turn the audio off i remove the app from the orchestrator
         import smart_proj.Orchestrator.Orchestrator
         smart_proj.Orchestrator.Orchestrator.Orchestrator. \
             remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)

@@ -4,10 +4,10 @@ import smart_proj.Actuators.ActuatorMobile
 import smart_proj.Actuators.ActuatorWall
 import smart_proj.Sensors.SensorColors
 import smart_proj.Sensors.SensorGesture
-import smart_proj.State_machines.PervasiveGameChromatizeIt
+import smart_proj.Apps.PervasiveGameChromatizeIt
 
 if __name__ == '__main__':
-    myState = smart_proj.State_machines.PervasiveGameChromatizeIt.PervasiveGameChromatizeIt()
+    myState = smart_proj.Apps.PervasiveGameChromatizeIt.PervasiveGameChromatizeIt()
     mySensor = smart_proj.Sensors.SensorColors.SensorColors()
     mySensorGesture = smart_proj.Sensors.SensorGesture.SensorGesture()
     mobile = smart_proj.Actuators.ActuatorMobile.ActuatorMobile()

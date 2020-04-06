@@ -2,10 +2,10 @@ import logging
 import statemachine
 
 import smart_proj.Sensors.Sensor
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 
 
-class PervasiveGameChromatizeIt(smart_proj.State_machines.Observer.Observer):
+class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     blue_taken = statemachine.State('Blue taken')

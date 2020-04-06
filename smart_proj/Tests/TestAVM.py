@@ -11,6 +11,8 @@ import smart_proj.Orchestrator.Orchestrator
 if __name__ == '__main__':
     sv1 = smart_proj.Sensors.SensorVisitor.SensorVisitor()
     sva1 = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
+    sv2 = smart_proj.Sensors.SensorVisitor.SensorVisitor()
+    sva2 = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
     st1 = smart_proj.Sensors.SensorTimer.SensorTimer()
     sm1 = smart_proj.Sensors.SensorMobile.SensorMobile()
     sw = smart_proj.Sensors.SensorWeather.SensorWeather()
@@ -22,11 +24,19 @@ if __name__ == '__main__':
     sv1.setArea("Works area")
     st1.set_user("1")
 
+    sv2.set_user("2")
+    sv2.setArea("Works area")
+
+    sva2.set_user("1")
+    sva2.setArea("Works area")
+
     sva1.set_user("1")
     sva1.setArea("Works area")
 
     sv1.run("visitor_arrived")
     sva1.run("visitor_u18_arrived")
+    sv2.run("visitor_arrived")
+    sva2.run("visitor_u18_arrived")
     st1.run("end_timer")
 
     sv1.run("visitor_left")

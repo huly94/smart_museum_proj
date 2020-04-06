@@ -1,11 +1,11 @@
 import logging
 
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 import smart_proj.Sensors.Sensor
 import statemachine
 
 
-class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
+class LightsManagingMachine(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     lights_off = statemachine.State('Lights off', initial=True)
     lights_on_for_visitors = statemachine.State('Lights on for visitors')
@@ -19,7 +19,7 @@ class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
     turn_the_lights_on_night = lights_off.to(lights_on_for_night)
     turn_the_lights_off_night = lights_on_for_night.to(lights_off)
 
-    visitors = 0
+    visitors = 0   # i need a counter that counts the number of visitors in the room
 
     actuator = None
     user = None
@@ -56,17 +56,17 @@ class LightsManagingMachine(smart_proj.State_machines.Observer.Observer):
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("LightsManaging received new sensor value:" + subject.current_state.name)
         if 'Empty' == subject.current_state.name:
-            self.visitors -= 1
+            self.visitors -= 1  # i decrement the counter when someone leaves the room
             if 'Lights off' == self.current_state.name:
                 pass
-            elif self.visitors > 0:
-                pass
+            elif self.visitors > 0:     # when the counter is greater than zero
+                pass    # i keep the lights on
             else:
                 self.turn_the_lights_off_visitor()
 
         elif 'Non Empty' == subject.current_state.name or 'Non Empty u18' == subject.current_state.name \
                 or 'Non Empty o18' == subject.current_state.name:
-            self.visitors += 1
+            self.visitors += 1  # i increment when other people arrive
             if 'Lights off' == self.current_state.name:
                 self.turn_the_lights_on_visitor()
 

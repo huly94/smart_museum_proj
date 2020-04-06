@@ -1,11 +1,11 @@
 import smart_proj.Actuators.ActuatorAudio
-import smart_proj.State_machines.AudioMoreInformationsApp
+import smart_proj.Apps.AudioMoreInformationsApp
 import smart_proj.Sensors.SensorTimer
 import smart_proj.Sensors.SensorVisitor
 
 
 if __name__ == '__main__':
-    myState = smart_proj.State_machines.AudioMoreInformationsApp.AudioMoreInformationMachine()
+    myState = smart_proj.Apps.AudioMoreInformationsApp.AudioMoreInformationMachine()
     mySensorTimer = smart_proj.Sensors.SensorTimer.SensorTimer()
     mySensorVisitor = smart_proj.Sensors.SensorVisitor.SensorVisitor()
     audio = smart_proj.Actuators.ActuatorAudio.ActuatorAudio()

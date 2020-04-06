@@ -1,10 +1,10 @@
 import logging
 import statemachine
 import smart_proj.Sensors.Sensor
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 
 
-class MobileSuggestionsMachine(smart_proj.State_machines.Observer.Observer):
+class MobileSuggestionsMachine(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     suggestions_received = statemachine.State('Suggestions received')
@@ -29,6 +29,7 @@ class MobileSuggestionsMachine(smart_proj.State_machines.Observer.Observer):
         logging.info("Terminata")
         self.actuator.turn_off()
         import smart_proj.Orchestrator.Orchestrator
+        # when i turn the mobile off i remove the app from the orchestrator
         app = self
         smart_proj.Orchestrator.Orchestrator.Orchestrator. \
             remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)

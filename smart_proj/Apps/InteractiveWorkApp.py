@@ -3,10 +3,10 @@ import logging
 import statemachine
 
 import smart_proj.Sensors.Sensor
-import smart_proj.State_machines.Observer
+import smart_proj.Apps.Observer
 
 
-class InteractiveWorkMachine(smart_proj.State_machines.Observer.Observer):
+class InteractiveWorkMachine(smart_proj.Apps.Observer.Observer):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     work_animated = statemachine.State('Work animated')
@@ -32,6 +32,7 @@ class InteractiveWorkMachine(smart_proj.State_machines.Observer.Observer):
         logging.info("Stop")
         self.actuator.turn_off()
         app = self
+        # when i turn the work off i remove the app from the orchestrator
         import smart_proj.Orchestrator.Orchestrator
         smart_proj.Orchestrator.Orchestrator.Orchestrator. \
             remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)

@@ -1,9 +1,9 @@
 import smart_proj.Actuators.ActuatorLights
 import smart_proj.Sensors.SensorMobile
-import smart_proj.State_machines.LightGiudeVisitorApp
+import smart_proj.Apps.LightGiudeVisitorApp
 
 if __name__ == '__main__':
-    myState = smart_proj.State_machines.LightGiudeVisitorApp.LightGuideVisitorMachine()
+    myState = smart_proj.Apps.LightGiudeVisitorApp.LightGuideVisitorMachine()
     mySensor = smart_proj.Sensors.SensorMobile.SensorMobile()
     light = smart_proj.Actuators.ActuatorLights.ActuatorLights()
 
