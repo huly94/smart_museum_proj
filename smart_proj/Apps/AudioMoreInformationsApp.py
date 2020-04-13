@@ -44,13 +44,14 @@ class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
                 if "Wait" == self.current_state.name:
                     self.visitor = False
                     logging.info("no extra audio")
+                    self.turn_off()
                 elif self.visitor:
                     self.turn_off()
                     self.visitor = False
                 else:
                     pass
 
-            elif "Non Empty" == subject.current_state.name:
+            elif "Non Empty u18" == subject.current_state.name or "Non Empty o18" == subject.current_state.name:
                 if "Wait" == self.current_state.name:
                     self.visitor = True
                     logging.info("Waiting for timer...")

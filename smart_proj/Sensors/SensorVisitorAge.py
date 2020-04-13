@@ -3,9 +3,12 @@ import statemachine
 import smart_proj.Sensors.Sensor
 
 
+# A RFID sensor reader
+# once that the physical reader detect an audio player, it uses the information that receives to create an instance of
+# this sensor dedicated to the user
 class SensorVisitorAge(smart_proj.Sensors.Sensor.Sensor):
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-    empty = statemachine.State('Empty', initial= True)
+    empty = statemachine.State('Empty', initial=True)
     non_empty_u18 = statemachine.State('Non Empty u18')
     non_empty_o18 = statemachine.State('Non Empty o18')
 
@@ -28,5 +31,3 @@ class SensorVisitorAge(smart_proj.Sensors.Sensor.Sensor):
     def on_enter_empty(self):
         logging.info("[SENSOR VISITOR AGE]: Visitor has left, new state:" + self.current_state.name)
         self.notify()
-
-

@@ -47,7 +47,7 @@ class InteractiveWorkMachine(smart_proj.Apps.Observer.Observer):
                 else:
                     self.stop()
 
-            elif "Non Empty" == subject.current_state.name:
+            elif "Non Empty u18" == subject.current_state.name or "Non Empty o18" == subject.current_state.name:
                 if "Wait" == self.current_state.name:
                     self.animate_work()
                 else:

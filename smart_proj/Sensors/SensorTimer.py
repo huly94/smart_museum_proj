@@ -11,6 +11,7 @@ class SensorTimer(smart_proj.Sensors.Sensor.Sensor):
     end_timer = timer_waiting.to(timer_expired)
     reset = timer_expired.to(timer_waiting)
 
+
     def __init__(self):
         super().__init__()
 

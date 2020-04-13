@@ -1,27 +1,18 @@
-import smart_proj.Actuators.ActuatorAudio
-import smart_proj.Apps.AudioMoreInformationsApp
 import smart_proj.Sensors.SensorTimer
-import smart_proj.Sensors.SensorVisitor
-
+import smart_proj.Sensors.SensorVisitorAge
 
 if __name__ == '__main__':
-    myState = smart_proj.Apps.AudioMoreInformationsApp.AudioMoreInformationMachine()
     mySensorTimer = smart_proj.Sensors.SensorTimer.SensorTimer()
-    mySensorVisitor = smart_proj.Sensors.SensorVisitor.SensorVisitor()
-    audio = smart_proj.Actuators.ActuatorAudio.ActuatorAudio()
+    mySensorVisitor = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
 
-    mySensorTimer.attach(myState)
-    mySensorVisitor.attach(myState)
+    mySensorVisitor.set_user("1")
+    mySensorVisitor.setArea("Works area")
 
-    myState.attach(audio)
+    mySensorTimer.setArea("Works area")
+    mySensorTimer.set_user("1")
 
-    mySensorVisitor.run('visitor_arrived')
+    mySensorVisitor.run('visitor_u18_arrived')
     mySensorTimer.run('end_timer')
+    mySensorVisitor.run('visitor_u18_left')
     mySensorTimer.run('reset')
-    mySensorVisitor.run('visitor_left')
-
-
-
-
-
 

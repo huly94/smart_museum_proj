@@ -13,18 +13,18 @@ class LightsManagingMachine(smart_proj.Apps.Observer.Observer):
     lights_on_for_night = statemachine.State('Lights on for night')
 
     turn_the_lights_on_visitor = lights_off.to(lights_on_for_visitors)
-    turn_the_lights_off_visitor = lights_on_for_visitors.to(lights_off)
+    turn_the_lights_off_visitor = lights_on_for_visitors.to(lights_off) | lights_on_for_clouds.to(lights_off) | \
+                                  lights_on_for_night.to(lights_off)
     turn_the_lights_on_clouds = lights_off.to(lights_on_for_clouds)
     turn_the_lights_off_clouds = lights_on_for_clouds.to(lights_off)
     turn_the_lights_on_night = lights_off.to(lights_on_for_night)
     turn_the_lights_off_night = lights_on_for_night.to(lights_off)
 
-    visitors = 0   # i need a counter that counts the number of visitors in the room
-
     actuator = None
     user = None
 
-
+    night = False
+    cloud = False
 
     def attach(self, lights):
         self.actuator = lights
@@ -39,37 +39,36 @@ class LightsManagingMachine(smart_proj.Apps.Observer.Observer):
 
     def on_turn_the_lights_on_clouds(self):
         logging.info("luci accese per nuvole")
+        self.cloud = True
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_clouds(self):
         logging.info("luci spente per nuvole")
+        self.cloud = False
         self.actuator.turn_off()
 
     def on_turn_the_lights_on_night(self):
         logging.info("luci accese notte")
+        self.night = True
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_night(self):
         logging.info("luci spente")
+        self.night = False
         self.actuator.turn_off()
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("LightsManaging received new sensor value:" + subject.current_state.name)
-        if 'Empty' == subject.current_state.name:
-            self.visitors -= 1  # i decrement the counter when someone leaves the room
+        if 'Not detected' == subject.current_state.name:
             if 'Lights off' == self.current_state.name:
                 pass
-            elif self.visitors > 0:     # when the counter is greater than zero
-                pass    # i keep the lights on
             else:
                 self.turn_the_lights_off_visitor()
 
-        elif 'Non Empty' == subject.current_state.name or 'Non Empty u18' == subject.current_state.name \
+        elif 'Person detected' == subject.current_state.name or 'Non Empty u18' == subject.current_state.name \
                 or 'Non Empty o18' == subject.current_state.name:
-            self.visitors += 1  # i increment when other people arrive
-            if 'Lights off' == self.current_state.name:
+            if 'Lights off' == self.current_state.name and self.night:
                 self.turn_the_lights_on_visitor()
-
             else:
                 pass
 

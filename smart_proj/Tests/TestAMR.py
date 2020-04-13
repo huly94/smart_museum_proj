@@ -1,15 +1,14 @@
-import smart_proj.Actuators.ActuatorAudio
 import smart_proj.Apps.AudioMusicRelaxApp
-import smart_proj.Sensors.SensorVisitor
+import smart_proj.Sensors.SensorVisitorAge
 
 
 if __name__ == '__main__':
-    myState = smart_proj.Apps.AudioMusicRelaxApp.AudioMusicRelaxMachine()
-    mySensor = smart_proj.Sensors.SensorVisitor.SensorVisitor()
-    audio = smart_proj.Actuators.ActuatorAudio.ActuatorAudio()
 
-    mySensor.attach(myState)
-    myState.attach(audio)
+    # Step 1: Initialize sensors available in the room
+    mySensor = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
 
-    mySensor.run('visitor_arrived')
-    mySensor.run('visitor_left')
+    mySensor.set_user("1")
+    mySensor.setArea("Relax area")
+
+    mySensor.run('visitor_o18_arrived')
+    mySensor.run('visitor_o18_left')

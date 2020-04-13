@@ -1,16 +1,12 @@
-import smart_proj.Actuators.ActuatorMobile
-import smart_proj.Sensors.SensorVisitor
-import smart_proj.Apps.MobileSuggestionsApp
+import smart_proj.Sensors.SensorVisitorAge
 
 
 if __name__ == '__main__':
 
-    myState = smart_proj.Apps.MobileSuggestionsApp.MobileSuggestionsMachine()
-    mySensor = smart_proj.Sensors.SensorVisitor.SensorVisitor()
-    mobile = smart_proj.Actuators.ActuatorMobile.ActuatorMobile()
+    mySensor = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
 
-    mySensor.attach(myState)
-    myState.attach(mobile)
+    mySensor.setArea("Exit area")
+    mySensor.set_user("1")
 
-    mySensor.run('visitor_arrived')
-    mySensor.run('visitor_left')
+    mySensor.run('visitor_u18_arrived')
+    mySensor.run('visitor_u18_left')

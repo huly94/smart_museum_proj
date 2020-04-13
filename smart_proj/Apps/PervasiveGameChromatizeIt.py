@@ -31,7 +31,6 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
     def attach_mobile(self, mobile):
         self.actuator_mobile = mobile
 
-
     def attach_wall(self, wall):
         self.actuator_wall = wall
 
@@ -89,7 +88,3 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
         elif "Not Detected" == subject.current_state.name:
             if "Wall painted blue" == self.current_state.name or "Wall painted red" == self.current_state.name or "Wall painted green" == self.current_state.name:
                 self.restart()
-
-
-
-

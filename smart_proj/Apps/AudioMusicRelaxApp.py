@@ -45,7 +45,7 @@ class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
                     else:
                         self.turn_off_music()
 
-                if "Non Empty" == subject.current_state.name:   # if someone arrives
+                if "Non Empty u18" == subject.current_state.name or "Non Empty o18" == subject.current_state.name:  # if someone arrives
                     if "Wait" == self.current_state.name:
                         self.play_relaxing_music()
                     else:

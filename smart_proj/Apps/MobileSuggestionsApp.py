@@ -41,7 +41,7 @@ class MobileSuggestionsMachine(smart_proj.Apps.Observer.Observer):
                 pass
             else:
                 self.reset()
-        if "Non Empty" == subject.current_state.name:
+        if "Non Empty u18" == subject.current_state.name or "Non Empty o18" == subject.current_state.name:
             if "Wait" == self.current_state.name:
                 self.send_suggestions()
             else:

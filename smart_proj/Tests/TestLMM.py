@@ -1,35 +1,26 @@
-import smart_proj.Actuators.ActuatorLights
-import smart_proj.Apps.LightsManagingApp
 import smart_proj.Sensors.SensorClock
-import smart_proj.Sensors.SensorVisitor
 import smart_proj.Sensors.SensorWeather
+import smart_proj.Sensors.SensorPresence
 
 if __name__ == '__main__':
-    mySensor = smart_proj.Sensors.SensorVisitor.SensorVisitor()
+
+
+    # Step 2.1: Initialize Room
+    # Assume that we have only 1 room.
+    # In this example, all sensors/actuators refer to the same room.
+    # No functionality available yet.
+
+    # Step 2.2: Initialize sensors available in the room
+    mySensorPir = smart_proj.Sensors.SensorPresence.SensorPresence()
     mySensorWeather = smart_proj.Sensors.SensorWeather.SensorWeather()
     mySensorClock = smart_proj.Sensors.SensorClock.SensorClock()
-    myState = smart_proj.Apps.LightsManagingApp.LightsManagingMachine()
-
-    light = smart_proj.Actuators.ActuatorLights.ActuatorLights()
-
-    myState.attach(light)
-    mySensor.attach(myState)
-    mySensorWeather.attach(myState)
-    mySensorClock.attach(myState)
-
-    mySensor.run("visitor_arrived")
-    mySensor.run("visitor_left")
-
-    mySensorWeather.run("bad_weather")
-    mySensorWeather.run("good_weather")
 
     mySensorClock.run("day_to_night")
-    mySensorClock.run("night_to_day")
+    # Try out different scenarios by playing with the sensors
+    mySensorPir.run("visitor_arrived")
+    mySensorPir.run("visitor_left")
 
-
-
-
-
-
-
-
+    #Case 4: Always ON
+    mySensorPir.run("visitor_arrived")
+    mySensorPir.run("visitor_left")
+    mySensorWeather.run("bad_weather")
