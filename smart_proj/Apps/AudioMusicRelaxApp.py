@@ -29,11 +29,8 @@ class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
     def on_turn_off_music(self):
         logging.info("Spengo musica")
         self.actuator.turn_off()
-        # when i turn off the music i remove the app from the orchestrator
-        import smart_proj.Orchestrator.Orchestrator
-        app = self
-        smart_proj.Orchestrator.Orchestrator.Orchestrator. \
-            remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)
+        # when i turn the audio off i set the user to -1 in order that the orchestrator remove the app
+        self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("AudioMusic received new sensor value" + subject.current_state.name)

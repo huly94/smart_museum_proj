@@ -79,12 +79,6 @@ class Orchestrator:
                 break
         return found
 
-    # an app is removed from the observers list by the app itself when it is in its final state
-    def remove_app(self, app):
-        for obs in self._observers:
-            if obs.user == app.user and obs.__class__ == app.__class__:
-                self.detach(obs)
-
     def attach(self, observer):
         self._observers.append(observer)
 
@@ -111,7 +105,18 @@ class Orchestrator:
                         tmp.set_user(subject.user)  # i set the user
                     if not self.exist_app_user(tmp):  # i control if the app of this user already exists
                         self.attach(tmp)  # if not i attach it to the observers list
-
+        # Updating phase
         for observer in self._observers:
             observer.update(subject) # i update all the observers, every app receives the sensor signal, but if it does
             # not match in its update method, the app does nothing
+        # Deleting phase
+        i = 0
+        while i < len(self._observers):
+            obs = self._observers[i]
+            if obs.user == "-1":
+                self.detach(obs)
+                i -= 1
+            i += 1
+        print(self._observers)
+
+

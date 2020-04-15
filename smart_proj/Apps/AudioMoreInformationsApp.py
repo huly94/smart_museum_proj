@@ -31,20 +31,18 @@ class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
     def on_turn_off(self):
         logging.info("Spento")
         self.actuator.turn_off()
-        app = self
-        # when i turn the audio off i remove the app from the orchestrator
-        import smart_proj.Orchestrator.Orchestrator
-        smart_proj.Orchestrator.Orchestrator.Orchestrator. \
-            remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)
+        # when i turn the audio off  i set the user to -1 in order that the orchestrator remove the app
+        self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("AudioMoreInformation recieved a new sensor value:" + subject.current_state.name)
+        logging.info("AudioMoreInformation received a new sensor value:" + subject.current_state.name)
         if subject.user == self.user and subject.area == "Works area":
             if "Empty" == subject.current_state.name:
                 if "Wait" == self.current_state.name:
                     self.visitor = False
                     logging.info("no extra audio")
-                    self.turn_off()
+                    # when i turn the audio off  i set the user to -1 in order that the orchestrator remove the app
+                    self.set_user("-1")
                 elif self.visitor:
                     self.turn_off()
                     self.visitor = False
@@ -70,7 +68,3 @@ class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
                     self.play_another_track()
                 else:
                     pass
-
-
-
-

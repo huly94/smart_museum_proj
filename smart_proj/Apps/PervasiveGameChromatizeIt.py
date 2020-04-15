@@ -65,12 +65,11 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
 
     def on_restart(self):
         logging.info("New State: Wait")
-        import smart_proj.Orchestrator.Orchestrator
+
         self.actuator_wall.turn_off()
         self.actuator_mobile.turn_off()
-        app = self
-        smart_proj.Orchestrator.Orchestrator.Orchestrator. \
-            remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)
+        # when i turn the game off i set the user to -1 in order that the orchestrator remove the app
+        self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("ChromatizeIt received a new sensor value:" + subject.current_state.name)

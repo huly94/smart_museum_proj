@@ -1,7 +1,3 @@
-import logging
-
-import smart_proj.Actuators.ActuatorMobile
-import smart_proj.Actuators.ActuatorWall
 import smart_proj.Sensors.SensorColors
 import smart_proj.Sensors.SensorGesture
 import smart_proj.Apps.PervasiveGameChromatizeIt
