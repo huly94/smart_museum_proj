@@ -29,6 +29,8 @@ class Orchestrator:
         import smart_proj.Actuators.ActuatorLights
         import smart_proj.Actuators.ActuatorPainting
         import smart_proj.Actuators.ActuatorMobile
+        import smart_proj.Apps.PervasiveGameChromatizeIt
+        import smart_proj.Actuators.ActuatorWall
 
         lightApp = smart_proj.Apps.LightsManagingApp.LightsManagingMachine()
         ligths = smart_proj.Actuators.ActuatorLights.ActuatorLights()
@@ -48,24 +50,26 @@ class Orchestrator:
                                       smart_proj.Apps.InteractiveWorkApp.InteractiveWorkMachine,
                                       smart_proj.Apps.MobileSuggestionsApp.MobileSuggestionsMachine]),
                 ("SensorMobile", [smart_proj.Apps.LightGiudeVisitorApp.LightGuideVisitorMachine]),
-                ("SensorVisitor", [])
+                ("SensorColors", [smart_proj.Apps.PervasiveGameChromatizeIt.PervasiveGameChromatizeIt])
             ])
             self.app_to_actuators = dict([
-                ("AudioVisitorMachine", smart_proj.Actuators.ActuatorAudio.ActuatorAudio),
-                ("LightGuideVisitorMachine", smart_proj.Actuators.ActuatorLights.ActuatorLights),
-                ("AudioMusicRelaxMachine", smart_proj.Actuators.ActuatorAudio.ActuatorAudio),
-                ("AudioMoreInformationMachine", smart_proj.Actuators.ActuatorAudio.ActuatorAudio),
-                ("InteractiveWorkMachine", smart_proj.Actuators.ActuatorPainting.ActuatorPainting),
-                ("MobileSuggestionsMachine", smart_proj.Actuators.ActuatorMobile.ActuatorMobile)
+                ("AudioVisitorMachine", [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]),
+                ("LightGuideVisitorMachine", [smart_proj.Actuators.ActuatorLights.ActuatorLights]),
+                ("AudioMusicRelaxMachine", [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]),
+                ("AudioMoreInformationMachine", [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]),
+                ("InteractiveWorkMachine", [smart_proj.Actuators.ActuatorPainting.ActuatorPainting]),
+                ("MobileSuggestionsMachine", [smart_proj.Actuators.ActuatorMobile.ActuatorMobile]),
+                ("PervasiveGameChromatizeIt", [smart_proj.Actuators.ActuatorMobile.ActuatorMobile,
+                                               smart_proj.Actuators.ActuatorWall.ActuatorWall])
             ])
             self.areas_to_app = dict([
                 ("Exit area", ["MobileSuggestionsMachine"]),
                 ("Relax area", ["AudioMusicRelaxMachine", "LightsManagingMachine"]),
                 ("Works area", ["AudioVisitorMachine", "LightsManagingMachine", "LightGuideVisitorMachine",
                                 "AudioMoreInformationMachine"]),
-                ("Interactive work area", "InteractiveWorkMachine")
-
-            ])
+                ("Interactive work area", "InteractiveWorkMachine"),
+                ("Game area", ["PervasiveGameChromatizeIt"])
+                ])
 
     def exist_app_user(self, user):
         found = False
@@ -101,12 +105,13 @@ class Orchestrator:
                 app_name = tmp.__str__()  # i get the name of the app
                 if app_name[0:app_name.index("(")] in self.areas_to_app[
                     subject.area]:  # if the app is in the area of the sensor
-                    act = self.app_to_actuators[app_name[0:app_name.index("(")]]()
-                    tmp.attach(act)  # i create the actuator and attach it
-                    tmp.set_user(subject.user)  # i set the user
+                    for act in self.app_to_actuators[app_name[0:app_name.index("(")]]:
+                        act = act()
+                        tmp.attach(act)  # i create the actuator and attach it
+                        tmp.set_user(subject.user)  # i set the user
                     if not self.exist_app_user(tmp):  # i control if the app of this user already exists
                         self.attach(tmp)  # if not i attach it to the observers list
 
         for observer in self._observers:
-            observer.update(subject)  # i update all the observers, every app receives the sensor signal, but if it does
+            observer.update(subject) # i update all the observers, every app receives the sensor signal, but if it does
             # not match in its update method, the app does nothing

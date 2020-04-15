@@ -27,12 +27,17 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
 
     actuator_mobile = None
     actuator_wall = None
+    user = None
 
-    def attach_mobile(self, mobile):
-        self.actuator_mobile = mobile
+    def set_user(self, u):
+        self.user = u
 
-    def attach_wall(self, wall):
-        self.actuator_wall = wall
+    def attach(self, actuator):
+        actuator_name = actuator.__str__()
+        if actuator_name[0:actuator_name.index("(")] == "ActuatorMobile":
+            self.actuator_mobile = actuator
+        elif actuator_name[0:actuator_name.index("(")] == "ActuatorWall":
+            self.actuator_wall = actuator
 
     def on_set_color_blue(self):
         logging.info("New State: blue")
@@ -60,31 +65,36 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
 
     def on_restart(self):
         logging.info("New State: Wait")
+        import smart_proj.Orchestrator.Orchestrator
         self.actuator_wall.turn_off()
         self.actuator_mobile.turn_off()
+        app = self
+        smart_proj.Orchestrator.Orchestrator.Orchestrator. \
+            remove_app(smart_proj.Orchestrator.Orchestrator.Orchestrator.getInstance(), app)
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
         logging.info("ChromatizeIt received a new sensor value:" + subject.current_state.name)
+        if subject.user == self.user:
 
-        if "Blue" == subject.current_state.name:
-            self.set_color_blue()
+            if "Blue" == subject.current_state.name:
+                self.set_color_blue()
 
-        elif "Red" == subject.current_state.name:
-            self.set_color_red()
+            elif "Red" == subject.current_state.name:
+                self.set_color_red()
 
-        elif "Green" == subject.current_state.name:
-            self.set_color_green()
+            elif "Green" == subject.current_state.name:
+                self.set_color_green()
 
-        elif "Detected" == subject.current_state.name:
-            if "Blue taken" == self.current_state.name or "Wall painted blue" == self.current_state.name:
-                self.paint_wall_blue()
-            elif "Red taken" == self.current_state.name or "Wall painted red" == self.current_state.name:
-                self.paint_wall_red()
-            elif "Green taken" == self.current_state.name or "Wall painted green" == self.current_state.name:
-                self.paint_wall_green()
-            else:
-                pass
+            elif "Detected" == subject.current_state.name:
+                if "Blue taken" == self.current_state.name or "Wall painted blue" == self.current_state.name:
+                    self.paint_wall_blue()
+                elif "Red taken" == self.current_state.name or "Wall painted red" == self.current_state.name:
+                    self.paint_wall_red()
+                elif "Green taken" == self.current_state.name or "Wall painted green" == self.current_state.name:
+                    self.paint_wall_green()
+                else:
+                    pass
 
-        elif "Not Detected" == subject.current_state.name:
-            if "Wall painted blue" == self.current_state.name or "Wall painted red" == self.current_state.name or "Wall painted green" == self.current_state.name:
-                self.restart()
+            elif "Not Detected" == subject.current_state.name:
+                if "Wall painted blue" == self.current_state.name or "Wall painted red" == self.current_state.name or "Wall painted green" == self.current_state.name:
+                    self.restart()

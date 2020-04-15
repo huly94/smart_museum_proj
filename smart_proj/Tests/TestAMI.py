@@ -11,8 +11,8 @@ if __name__ == '__main__':
     mySensorTimer.setArea("Works area")
     mySensorTimer.set_user("1")
 
-    mySensorVisitor.run('visitor_u18_arrived')
+    mySensorVisitor.run('visitor_o18_arrived')
     mySensorTimer.run('end_timer')
-    mySensorVisitor.run('visitor_u18_left')
+    mySensorVisitor.run('visitor_o18_left')
     mySensorTimer.run('reset')
 
