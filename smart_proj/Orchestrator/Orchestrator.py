@@ -117,6 +117,5 @@ class Orchestrator:
                 self.detach(obs)
                 i -= 1
             i += 1
-        print(self._observers)
 
 
