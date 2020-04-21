@@ -16,13 +16,19 @@ if __name__ == '__main__':
     r1.add_point_of_interest("Exit1", "Exit area")
     r1.add_point_of_interest("Picasso", "Works area")
     r1.add_point_of_interest("Dali'", "Works area")
+    r1.add_point_of_interest("Animated Opera", "Interactive work area")
 
     # Associate a sensor to each point of interest
     r1.add_sensor_at_point("RFID reader", "Gioconda")
+    r1.add_sensor_at_point("Sensor timer", "Gioconda")
     r1.add_sensor_at_point("RFID reader", "Picasso")
+    r1.add_sensor_at_point("Sensor timer", "Picasso")
     r1.add_sensor_at_point("RFID reader", "Dali'")
+    r1.add_sensor_at_point("Sensor timer", "Dali'")
     r1.add_sensor_at_point("RFID reader", "Bench")
     r1.add_sensor_at_point("RFID reader", "Exit1")
+    r1.add_sensor_at_point("RFID reader", "Animated Opera")
+
 
     # this are the tags we associate to each visitor
     # they represent the tag attached to the audio guide that is detected by the RFID reader
@@ -46,8 +52,9 @@ if __name__ == '__main__':
 
     visitors = r1.people_in_room
     points = list(r1.point_to_areas.keys())
-    for i in range(0, 10):
+    for i in range(0, 2):
         for v in visitors:
             v.move_to_pos(points[random.randint(0, len(points) - 1)])
             r1.update()
         print(r1.people_at_point)
+    print(r1.time)
