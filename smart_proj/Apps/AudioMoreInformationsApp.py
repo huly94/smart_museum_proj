@@ -3,9 +3,17 @@ import statemachine
 import smart_proj.Sensors.Sensor
 import smart_proj.Apps.Observer
 
+"""@package docstring
+Documentation for this module.
+
+A visitor receives more information 
+about a work if he spends more time after the end of the track
+another track is played in which he receives more information
+
+"""
+
 
 class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     more_info_provided = statemachine.State('More informations provided')
 
@@ -18,6 +26,10 @@ class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
 
     user = None
 
+    def __init__(self):
+        super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
+
     def set_user(self, u):
         self.user = u
 
@@ -25,22 +37,22 @@ class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
         self.actuator = audio
 
     def on_play_another_track(self):
-        logging.info("Time out, riproduco un'altra traccia")
+        self.logger.info("Time out, riproduco un'altra traccia")
         self.actuator.turn_on()
 
     def on_turn_off(self):
-        logging.info("Spento")
+        self.logger.info("Spento")
         self.actuator.turn_off()
         # when i turn the audio off  i set the user to -1 in order that the orchestrator remove the app
         self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("AudioMoreInformation received a new sensor value:" + subject.current_state.name)
+        self.logger.info("AudioMoreInformation received a new sensor value:" + subject.current_state.name)
         if subject.user == self.user and subject.area == "Works area":
             if "Empty" == subject.current_state.name:
                 if "Wait" == self.current_state.name:
                     self.visitor = False
-                    logging.info("no extra audio")
+                    self.logger.info("no extra audio")
                     # when i turn the audio off  i set the user to -1 in order that the orchestrator remove the app
                     self.set_user("-1")
                 elif self.visitor:
@@ -52,7 +64,7 @@ class AudioMoreInformationMachine(smart_proj.Apps.Observer.Observer):
             elif "Non Empty u18" == subject.current_state.name or "Non Empty o18" == subject.current_state.name:
                 if "Wait" == self.current_state.name:
                     self.visitor = True
-                    logging.info("Waiting for timer...")
+                    self.logger.info("Waiting for timer...")
                 else:
                     pass
 

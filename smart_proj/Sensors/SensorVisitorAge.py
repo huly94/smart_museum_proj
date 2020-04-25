@@ -7,7 +7,6 @@ import smart_proj.Sensors.Sensor
 # once that the physical reader detect an audio player, it uses the information that receives to create an instance of
 # this sensor dedicated to the user
 class SensorVisitorAge(smart_proj.Sensors.Sensor.Sensor):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     empty = statemachine.State('Empty', initial=True)
     non_empty_u18 = statemachine.State('Non Empty u18')
     non_empty_o18 = statemachine.State('Non Empty o18')
@@ -19,15 +18,16 @@ class SensorVisitorAge(smart_proj.Sensors.Sensor.Sensor):
 
     def __init__(self):
         super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def on_enter_non_empty_u18(self):
-        logging.info("[SENSOR VISITOR AGE]: A new visitor u18 has arrived, new state:" + self.current_state.name)
+        self.logger.info("A new visitor u18 has arrived, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_non_empty_o18(self):
-        logging.info("[SENSOR VISITOR AGE]: A new visitor o18 has arrived, new state:" + self.current_state.name)
+        self.logger.info("A new visitor o18 has arrived, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_empty(self):
-        logging.info("[SENSOR VISITOR AGE]: Visitor has left, new state:" + self.current_state.name)
+        self.logger.info("Visitor has left, new state:" + self.current_state.name)
         self.notify()

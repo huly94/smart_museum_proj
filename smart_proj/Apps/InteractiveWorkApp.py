@@ -5,9 +5,15 @@ import statemachine
 import smart_proj.Sensors.Sensor
 import smart_proj.Apps.Observer
 
+"""@package docstring
+Documentation for this module.
+
+An interactive painting is animated when a visitor is detected
+it can be based on the emotions or the preferences of the user
+"""
+
 
 class InteractiveWorkMachine(smart_proj.Apps.Observer.Observer):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     work_animated = statemachine.State('Work animated')
 
@@ -18,6 +24,10 @@ class InteractiveWorkMachine(smart_proj.Apps.Observer.Observer):
 
     user = None
 
+    def __init__(self):
+        super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
+
     def set_user(self, u):
         self.user = u
 
@@ -25,17 +35,17 @@ class InteractiveWorkMachine(smart_proj.Apps.Observer.Observer):
         self.actuator = paint
 
     def on_animate_work(self):
-        logging.info("Opera animata")
+        self.logger.info("Opera animata")
         self.actuator.turn_on()
 
     def on_stop(self):
-        logging.info("Stop")
+        self.logger.info("Stop")
         self.actuator.turn_off()
         # when i turn the work off i set the user to -1 in order that the orchestrator remove the app
         self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("InteractiveWork received new sensor value:" + subject.current_state.name)
+        self.logger.info("InteractiveWork received new sensor value:" + subject.current_state.name)
         if subject.user == self.user and subject.area == "Interactive work area":
 
             if "Empty" == subject.current_state.name:

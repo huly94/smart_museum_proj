@@ -7,8 +7,8 @@ if __name__ == '__main__':
     mySensorVisitor = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
 
     # Assign an area to the sensors
-    mySensorVisitor.setArea("Works area")
-    mySensorTimer.setArea("Works area")
+    mySensorVisitor.set_area("Works area")
+    mySensorTimer.set_area("Works area")
 
     # Assign the user to the sensors
     # Each user has a unique code that can be assigned by reading the tag or in a random way

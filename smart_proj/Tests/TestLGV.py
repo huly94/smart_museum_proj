@@ -6,7 +6,7 @@ if __name__ == '__main__':
     mySensor = smart_proj.Sensors.SensorMobile.SensorMobile()
 
     # Assign an area to the sensors
-    mySensor.setArea("Works area")
+    mySensor.set_area("Works area")
 
     # Assign the user to the sensors
     # Each user has a unique code that can be assigned by reading the tag or in a random way

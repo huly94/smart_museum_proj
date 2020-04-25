@@ -3,9 +3,15 @@ import smart_proj.Sensors.Sensor
 import smart_proj.Apps.Observer
 import statemachine
 
+"""@package docstring
+Documentation for this module.
+
+Basing on the age of the visitor, a certain audio track is played. 
+the audio is transmitted on the audio-guide headphones of the visitor
+"""
+
 
 class AudioVisitorMachine(smart_proj.Apps.Observer.Observer):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     playing_track_u18 = statemachine.State('Playing track for u18')
     playing_track_o18 = statemachine.State('Playing track for o18')
@@ -18,6 +24,10 @@ class AudioVisitorMachine(smart_proj.Apps.Observer.Observer):
     actuator = None
     user = None
 
+    def __init__(self):
+        super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
+
     def set_user(self, u):
         self.user = u
 
@@ -25,29 +35,28 @@ class AudioVisitorMachine(smart_proj.Apps.Observer.Observer):
         self.actuator = audio
 
     def on_play_track_u18(self):
-        logging.info("Playing track for u18")
+        self.logger.info("Playing track for u18")
         self.actuator.turn_on()
 
     def on_turn_off_track_u18(self):
-
-        logging.info("Turning off")
+        self.logger.info("Turning off")
         self.actuator.turn_off()
         # when i turn the audio off i set the user to -1 in order that the orchestrator remove the app
         self.set_user("-1")
 
     def on_play_track_o18(self):
-        logging.info("Playing track for o18")
+        self.logger.info("Playing track for o18")
         self.actuator.turn_on()
 
     def on_turn_off_track_o18(self):
-        logging.info("Turning off")
+        self.logger.info("Turning off")
         self.actuator.turn_off()
         app = self
         # when i turn the audio off i set the user to -1 in order that the orchestrator remove the app
         self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("AudioVisitor received new sensor value:" + subject.current_state.name)
+        self.logger.info("AudioVisitor received new sensor value:" + subject.current_state.name)
         if subject.user == self.user:
             if "Empty" == subject.current_state.name:
                 if "Wait" == self.current_state.name:

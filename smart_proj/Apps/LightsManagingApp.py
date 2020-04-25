@@ -4,9 +4,14 @@ import smart_proj.Apps.Observer
 import smart_proj.Sensors.Sensor
 import statemachine
 
+"""@package docstring
+Documentation for this module.
+
+The lights turn on or off basing on time, weather or visitor presence 
+"""
+
 
 class LightsManagingMachine(smart_proj.Apps.Observer.Observer):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     lights_off = statemachine.State('Lights off', initial=True)
     lights_on_for_visitors = statemachine.State('Lights on for visitors')
     lights_on_for_clouds = statemachine.State('Lights on for clouds')
@@ -26,39 +31,43 @@ class LightsManagingMachine(smart_proj.Apps.Observer.Observer):
     night = False
     cloud = False
 
+    def __init__(self):
+        super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
+
     def attach(self, lights):
         self.actuator = lights
 
     def on_turn_the_lights_on_visitor(self):
-        logging.info("luci accese per visitatore")
+        self.logger.info("luci accese per visitatore")
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_visitor(self):
-        logging.info("luci spente per visitatore")
+        self.logger.info("luci spente per visitatore")
         self.actuator.turn_off()
 
     def on_turn_the_lights_on_clouds(self):
-        logging.info("luci accese per nuvole")
+        self.logger.info("luci accese per nuvole")
         self.cloud = True
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_clouds(self):
-        logging.info("luci spente per nuvole")
+        self.logger.info("luci spente per nuvole")
         self.cloud = False
         self.actuator.turn_off()
 
     def on_turn_the_lights_on_night(self):
-        logging.info("luci accese notte")
+        self.logger.info("luci accese notte")
         self.night = True
         self.actuator.turn_on()
 
     def on_turn_the_lights_off_night(self):
-        logging.info("luci spente")
+        self.logger.info("luci spente")
         self.night = False
         self.actuator.turn_off()
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("LightsManaging received new sensor value:" + subject.current_state.name)
+        self.logger.info("LightsManaging received new sensor value:" + subject.current_state.name)
         if 'Not detected' == subject.current_state.name:
             if 'Lights off' == self.current_state.name:
                 pass

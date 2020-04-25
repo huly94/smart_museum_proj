@@ -2,9 +2,14 @@ import logging
 import statemachine
 import smart_proj.Sensors.Sensor
 
+"""@package docstring
+Documentation for this module.
+
+a PWS100 sensor that detects the weather in order to turn on or off the lights
+"""
+
 
 class SensorWeather(smart_proj.Sensors.Sensor.Sensor):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     sunny = statemachine.State('Sunny', initial=True)
     cloud = statemachine.State('Cloud')
 
@@ -13,11 +18,12 @@ class SensorWeather(smart_proj.Sensors.Sensor.Sensor):
 
     def __init__(self):
         super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def on_enter_cloud(self):
-        logging.info("[SENSOR WEATHER]: Clouds arrived, new state:" + self.current_state.name)
+        self.logger.info("Clouds arrived, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_sunny(self):
-        logging.info("[SENSOR WEATHER]: Sun arrived, new state:" + self.current_state.name)
+        self.logger.info("Sun arrived, new state:" + self.current_state.name)
         self.notify()

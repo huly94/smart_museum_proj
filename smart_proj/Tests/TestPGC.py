@@ -15,11 +15,11 @@ if __name__ == '__main__':
     mySensor.set_user("2")
     mySensorGesture.set_user("2")
 
-    mySensor.setArea("Game area")
-    mySensorGesture.setArea("Game area")
+    mySensor.set_area("Game area")
+    mySensorGesture.set_area("Game area")
 
-    mySensor1.setArea("Game area")
-    mySensorGesture1.setArea("Game area")
+    mySensor1.set_area("Game area")
+    mySensorGesture1.set_area("Game area")
 
     mySensor.run("blue_detected")
     mySensor1.run("red_detected")

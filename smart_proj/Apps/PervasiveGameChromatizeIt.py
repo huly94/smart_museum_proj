@@ -4,9 +4,15 @@ import statemachine
 import smart_proj.Sensors.Sensor
 import smart_proj.Apps.Observer
 
+"""@package docstring
+Documentation for this module.
+
+pervasive game “chromatize it!”: In an area there are three light sources colored of different colors
+, a visitor through a device pick one color that uses to paint a smart wall
+"""
+
 
 class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     blue_taken = statemachine.State('Blue taken')
     red_taken = statemachine.State('Red taken')
@@ -28,6 +34,10 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
     actuator_mobile = None
     actuator_wall = None
     user = None
+    
+    def __init__(self):
+        super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def set_user(self, u):
         self.user = u
@@ -40,31 +50,31 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
             self.actuator_wall = actuator
 
     def on_set_color_blue(self):
-        logging.info("New State: blue")
+        self.logger.info("New State: blue")
         self.actuator_mobile.turn_on()
 
     def on_set_color_red(self):
-        logging.info("New State: red")
+        self.logger.info("New State: red")
         self.actuator_mobile.turn_on()
 
     def on_set_color_green(self):
-        logging.info("New State: green")
+        self.logger.info("New State: green")
         self.actuator_mobile.turn_on()
 
     def on_paint_wall_red(self):
-        logging.info("New State: wall red")
+        self.logger.info("New State: wall red")
         self.actuator_wall.turn_on()
 
     def on_paint_wall_blue(self):
-        logging.info("New State: wall blue")
+        self.logger.info("New State: wall blue")
         self.actuator_wall.turn_on()
 
     def on_paint_wall_green(self):
-        logging.info("New State: wall blue")
+        self.logger.info("New State: wall blue")
         self.actuator_wall.turn_on()
 
     def on_restart(self):
-        logging.info("New State: Wait")
+        self.logger.info("New State: Wait")
 
         self.actuator_wall.turn_off()
         self.actuator_mobile.turn_off()
@@ -72,7 +82,7 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
         self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("ChromatizeIt received a new sensor value:" + subject.current_state.name)
+        self.logger.info("ChromatizeIt received a new sensor value:" + subject.current_state.name)
         if subject.user == self.user:
 
             if "Blue" == subject.current_state.name:

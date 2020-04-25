@@ -7,7 +7,6 @@ import smart_proj.Sensors.Sensor
 # is able to create an app when it receives a notification from a sensor. Also app triggered by the same sensor are
 # divided in areas in order that the app is istantiated only when the visitor is in that area.
 class Orchestrator:
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     __instance = None
 
     @staticmethod
@@ -70,6 +69,7 @@ class Orchestrator:
                 ("Interactive work area", "InteractiveWorkMachine"),
                 ("Game area", ["PervasiveGameChromatizeIt"])
                 ])
+            self.logger = logging.getLogger(self.__class__.__name__)
 
     def exist_app_user(self, user):
         found = False
@@ -91,7 +91,7 @@ class Orchestrator:
     # The update method, basing on which sensor signal receives (if the sensor is not registered then it does nothing),
     # create an app and the actuator and link it to the correct user
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("[ORCHESTRATOR]received update:" + subject.current_state.name)
+        self.logger.info("received update:" + subject.current_state.name)
         sensor_name = subject.__str__()  # i get the name of the sensor
         if sensor_name[0:sensor_name.index("(")] in self.sensor_to_app.keys():  # if the sensor exists in the register
             for app in self.sensor_to_app[sensor_name[0:sensor_name.index("(")]]:

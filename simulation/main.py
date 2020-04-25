@@ -29,7 +29,6 @@ if __name__ == '__main__':
     r1.add_sensor_at_point("RFID reader", "Exit1")
     r1.add_sensor_at_point("RFID reader", "Animated Opera")
 
-
     # this are the tags we associate to each visitor
     # they represent the tag attached to the audio guide that is detected by the RFID reader
     id_u18 = 100

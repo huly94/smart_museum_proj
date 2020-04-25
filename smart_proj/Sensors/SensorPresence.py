@@ -14,7 +14,7 @@ import smart_proj.Sensors.Sensor
 # the room is no longer occupied by a visitor.
 # When the sensor receives consecutive motion detection events, it will suppress them.
 class SensorPresence(smart_proj.Sensors.Sensor.Sensor):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+
     empty = statemachine.State("Not detected", initial= True)
     non_empty = statemachine.State("Person detected")
 
@@ -23,11 +23,12 @@ class SensorPresence(smart_proj.Sensors.Sensor.Sensor):
 
     def __init__(self):
         super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def on_enter_non_empty(self):
-        logging.info("[SENSOR PRESENCE]: A new visitor has arrived, new state:" + self.current_state.name)
+        self.logger.info("A new visitor has arrived, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_empty(self):
-        logging.info("[SENSOR PRESENCE]: Visitor has left, new state:" + self.current_state.name)
+        self.logger.info("Visitor has left, new state:" + self.current_state.name)
         self.notify()

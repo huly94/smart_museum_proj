@@ -7,8 +7,8 @@ if __name__ == '__main__':
     sva2 = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
 
     # Assign an area to the sensors
-    sva1.setArea("Works area")
-    sva2.setArea("Works area")
+    sva1.set_area("Works area")
+    sva2.set_area("Works area")
 
     # Assign the user to the sensors
     # Each user has a unique code that can be assigned by reading the tag or in a random way

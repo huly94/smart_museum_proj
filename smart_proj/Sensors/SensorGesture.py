@@ -1,10 +1,15 @@
 import logging
 import statemachine
 import smart_proj.Sensors.Sensor
+"""@package docstring
+Documentation for this module.
+
+a motion sensor that detects when a visitor 
+pass the paint on the smart wall
+"""
 
 
 class SensorGesture(smart_proj.Sensors.Sensor.Sensor):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     not_detected = statemachine.State('Not Detected', initial= True)
     detected = statemachine.State('Detected')
 
@@ -13,11 +18,12 @@ class SensorGesture(smart_proj.Sensors.Sensor.Sensor):
 
     def __init__(self):
         super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def on_enter_not_detected(self):
-        logging.info("[SENSOR GESTURE]:No gesture detected, new state:" + self.current_state.name)
+        self.logger.info("No gesture detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_detected(self):
-        logging.info("[SENSOR GESTURE]Gesture detected, new state:" + self.current_state.name)
+        self.logger.info("Gesture detected, new state:" + self.current_state.name)
         self.notify()

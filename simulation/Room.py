@@ -45,7 +45,7 @@ class Room:
         self.time += 1/len(self.people_in_room)
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
-        if current_time > "10:00:00" and not self.night:
+        if current_time > "17:00:00" and not self.night:
             sensor_clock = smart_proj.Sensors.SensorClock.SensorClock()
             self.night = True
             sensor_clock.run("day_to_night")
@@ -73,14 +73,14 @@ class Room:
                             if self.instances_to_timer[sensor] == 0:
                                 sensor_timer = smart_proj.Sensors.SensorTimer.SensorTimer()
                                 sensor_timer.set_user(sensor.user)
-                                sensor_timer.setArea(sensor.area)
+                                sensor_timer.set_area(sensor.area)
                                 sensor_timer.run("end_timer")
 
                 if "RFID reader" in self.point_to_sensor[point]:
                     for visitor in self.people_at_point[point]:
                         sensor_visitor = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
                         sensor_visitor.set_user(visitor.tag)
-                        sensor_visitor.setArea(self.point_to_areas[point])
+                        sensor_visitor.set_area(self.point_to_areas[point])
                         if not self.exist_instance_at_point(sensor_visitor, point):
                             self.add_active_instance(sensor_visitor, point)
                             self.instances_to_timer[sensor_visitor] = len(self.people_in_room)

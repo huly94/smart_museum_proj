@@ -3,9 +3,15 @@ import statemachine
 import smart_proj.Sensors.Sensor
 import smart_proj.Apps.Observer
 
+"""@package docstring
+Documentation for this module.
+
+During a break the visitor receives a relaxing music
+the music is played in his audio-guide headphones
+"""
+
 
 class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     wait = statemachine.State('Wait', initial=True)
     sound_on = statemachine.State('Sound on')
 
@@ -16,6 +22,10 @@ class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
 
     user = None
 
+    def __init__(self):
+        super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
+
     def set_user(self, u):
         self.user = u
 
@@ -23,17 +33,17 @@ class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
         self.actuator = audio
 
     def on_play_relaxing_music(self):
-        logging.info("riproduco musica rilassante")
+        self.logger.info("riproduco musica rilassante")
         self.actuator.turn_on()
 
     def on_turn_off_music(self):
-        logging.info("Spengo musica")
+        self.logger.info("Spengo musica")
         self.actuator.turn_off()
         # when i turn the audio off i set the user to -1 in order that the orchestrator remove the app
         self.set_user("-1")
 
     def update(self, subject: smart_proj.Sensors.Sensor.Sensor):
-        logging.info("AudioMusic received new sensor value" + subject.current_state.name)
+        self.logger.info("AudioMusic received new sensor value" + subject.current_state.name)
         if subject.user == self.user and subject.area == "Relax area":
             if subject.user == self.user:
                 if "Empty" == subject.current_state.name:
@@ -47,4 +57,3 @@ class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
                         self.play_relaxing_music()
                     else:
                         pass
-

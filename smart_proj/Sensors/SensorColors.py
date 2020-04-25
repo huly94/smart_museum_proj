@@ -4,9 +4,14 @@ import statemachine
 
 import smart_proj.Sensors.Sensor
 
+"""@package docstring
+Documentation for this module.
+
+A SparkFun RGB Light Sensor that detect the color coming out from a light source
+"""
+
 
 class SensorColors(smart_proj.Sensors.Sensor.Sensor):
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
     off = statemachine.State('Off', initial=True)
     blue = statemachine.State('Blue')
     red = statemachine.State('Red')
@@ -19,19 +24,20 @@ class SensorColors(smart_proj.Sensors.Sensor.Sensor):
 
     def __init__(self):
         super().__init__()
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     def on_enter_blue(self):
-        logging.info("[SENSOR COLOR]: Color detected, new state:" + self.current_state.name)
+        self.logger.info("Color detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_red(self):
-        logging.info("[SENSOR COLOR]: Color detected, new state:" + self.current_state.name)
+        self.logger.info("Color detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_green(self):
-        logging.info("[SENSOR COLOR]: Color detected, new state:" + self.current_state.name)
+        self.logger.info("Color detected, new state:" + self.current_state.name)
         self.notify()
 
     def on_enter_off(self):
-        logging.info("[SENSOR COLOR]: No color detected, new state:" + self.current_state.name)
+        self.logger.info("No color detected, new state:" + self.current_state.name)
         self.notify()
