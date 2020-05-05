@@ -1,4 +1,4 @@
-#Project Smart Museum: introduction
+# Project Smart Museum: introduction
 
 museums are one of the most important cultural destinations for tourists and non. Indeed, they contains a collection of 
 works linked to one or more cultural aspect like art, science or technology. Today, museums are diffused in all the cities 
@@ -10,7 +10,7 @@ automatized by an overall entity, called orchestrator. In the next paragraphs we
 providing also some examples, the physical and software composition of sensors and actuators, a description 
 of the applications we have chosen and an overview on the orchestrator tasks.
 
-##1.1 THE APPROACH
+## 1.1 THE APPROACH
 
 The main challenge is to design an environment in which the experience provided is customized, in order to satisfy the need of everyone. In particular one of the principal feature is to make a distinction on the age of the visitor, in order that the information provided are filtered by age. The project is based on the python library python-statemachine (https://pypi.org/project/python-statemachine/) that we used to represent sensors, actuators and processes, or applications, as state machine. We first have to provide a definition of these objects:
 1. Sensors: represent a physical sensor that can be placed inside a museum to get certain inputs.
