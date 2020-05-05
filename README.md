@@ -1,4 +1,5 @@
 #Project Smart Museum: introduction
+
 museums are one of the most important cultural destinations for tourists and non. Indeed, they contains a collection of 
 works linked to one or more cultural aspect like art, science or technology. Today, museums are diffused in all the cities 
 of the world, and their main task is not only to preserve objects and works of art, but also spread knowledge through 
@@ -18,4 +19,4 @@ The main challenge is to design an environment in which the experience provided 
 
 So the applications are state machines that are triggered by the activation of a sensor, thanks to which we have a 
 transition in another state in which the application can make use of an actuator to reach its goal (switch on the light, play an audio track and so on). To achieve this situation we need intermediary between sensor and apps, able to recognize the signal sent by the sensor and create the correct application and actuator to associate. this is possible thanks to a register, that the orchestrator has, that is composed by two maps: one has a sensor as key and as value the list of app associated, the other one has an application as key and as value the list of actuators related. In the following interaction diagram we describe how the interaction between objects take place:
-![Image description](https://ibb.co/Nyn7h63)
+![Image description](https://i.ibb.co/mcFSsCB/sequence.png)
