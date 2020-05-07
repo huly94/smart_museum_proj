@@ -63,7 +63,7 @@ and actuators used:
    information about the age of a visitor through a tag attached for example on the audio guide provided at the beginning of the visit.
    An example can be a RFID reader, with functionality read only, that detects tags at a distance of max 5 meters  
    ![RFID_reader](https://i.ibb.co/5KQ3MXt/RFID-Illustration.png)
-   - SensorTimer: This sensor is triggered at the expiration of a simple timer. We need it in order to provide further 
+   - **SensorTimer**: This sensor is triggered at the expiration of a simple timer. We need it in order to provide further 
    information about a work if the visitor, at the end of the track, wants to know more about that particular work.
   
    - **SensorClock**: A sensor based on the clock. We need it to know the time, in order to turn the lights when it’s dark.
@@ -77,6 +77,7 @@ and actuators used:
      skies, and to alert the user when conditions change. A built-in daylight sensor is also included. When the sensor 
      is set to detect “Clear & Dark” conditions, it will alarm for clear skies. When the sensor is set to detect 
      “Cloudy or Light” conditions, it will alert you when clouds roll in or dawn approaches
+     
      ![cloud_sensor](https://diffractionlimited.com/wp-content/uploads/2016/08/Img_5834.jpg)
      
      Another solution can be using a web service that give continuously the weather. There are several weather APIs, an example 
@@ -84,7 +85,8 @@ and actuators used:
    - **SensorPresence**: a simple occupancy sensor (probably a passive infraRed sensor) that detects if there is at least 
      one visitor in the area or none. We need this sensor for the light managing. It is an electronic sensor that 
      measures infrared (IR) light radiating from objects in its field of view.
-    ![prensence_sensor](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Light_switch_with_passive_infrared_sensor.jpg/150px-Light_switch_with_passive_infrared_sensor.jpg)
+     
+     ![prensence_sensor](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Light_switch_with_passive_infrared_sensor.jpg/150px-Light_switch_with_passive_infrared_sensor.jpg)
    
    - **SensorMobile**: This sensor is triggered by the pushing on a button (placed or in a mobile application or on the audio guide itself), 
      when a visitor need suggestions on works related to the one is currently watching, in this case a colored light
@@ -96,7 +98,8 @@ and actuators used:
      detect when a visitor pass the paint on the smart wall. the sensor color can be a sparkFun RGB light sensor - ISL29125.
      The ISL29125 breakout board makes it very easy to sense and record the light intensity of the general red, green,
      and blue spectrums of visible light while rejecting IR from light sources.
-    ![color_sensor](https://cdn.sparkfun.com//assets/parts/9/6/7/7/12829-01.jpg)
+     
+     ![color_sensor](https://cdn.sparkfun.com//assets/parts/9/6/7/7/12829-01.jpg)
 
 2. Actuators:
    
@@ -117,7 +120,6 @@ and actuators used:
 The code of sensors and actuators is very similar, indeed both implements a two-state machine, with the only difference
 that the sensor has a notify method when it is activated. These are examples of code for sensors and actuators:
 ![code_sensor](https://i.ibb.co/VJGbTVb/Schermata-2020-05-07-alle-11-15-40.png)
-
 ![code_actuator](https://i.ibb.co/qrQ2051/Schermata-2020-05-07-alle-11-17-12.png)
 
 ## 1.4 APPLICATIONS
@@ -127,5 +129,9 @@ a general application, that takes care of an overall task like the managing of t
 that depends from the visitor. Indeed different visitors can be in different states of the same application, for example 
 a visitor that is just arrived at a work cannot be in the same state of a visitor that is in front of it since several 
 minutes. In the following images we represent all the applications implemented in this project, through a state diagram:
+### 1.4.1 Audio visitor app
+Basing on the age of the visitor,  a certain audio track is played. At different ages correspond different audio tracks.
+![avm](https://i.ibb.co/MMynmnm/Schermata-2020-04-23-alle-18-09-39.png)
+
 
 
