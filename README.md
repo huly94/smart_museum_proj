@@ -61,12 +61,13 @@ and actuators used:
    - **Sensor visitor age**:  We need this sensor to distinguish different ages of visitors, in order to play to them different 
    audio tracks and also to give them different experiences. Therefore the right solution is the RFID thanks to which we can transmit 
    information about the age of a visitor through a tag attached for example on the audio guide provided at the beginning of the visit.
-   An example can be a RFID reader, with functionality read only, that detects tags at a distance of max 5 meters  
+   An example can be a long range UHF RFID reader. This model has the advantages of stable reading performance, good consistency, 
+   low working current and temperature, long service life, and small external influence, and the product adopts the waterproof outer shell design.  
    ![RFID_reader](https://i.ibb.co/5KQ3MXt/RFID-Illustration.png)
    - **SensorTimer**: This sensor is triggered at the expiration of a simple timer. We need it in order to provide further 
    information about a work if the visitor, at the end of the track, wants to know more about that particular work.
   
-   - **SensorClock**: A sensor based on the clock. We need it to know the time, in order to turn the lights when it’s dark.
+   - **SensorClock**: A sensor based on the clock. We need it to know the time, in order to turn the lights on when it’s dark.
      Both SensorTimer and SensorClock can be realized using a system call 
     
    - **SensorWeather**: A sensor that detects the weather, in order to turn the lights on when there are clouds. 
@@ -88,9 +89,9 @@ and actuators used:
      
      ![prensence_sensor](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Light_switch_with_passive_infrared_sensor.jpg/150px-Light_switch_with_passive_infrared_sensor.jpg)
    
-   - **SensorMobile**: This sensor is triggered by the pushing on a button (placed or in a mobile application or on the audio guide itself), 
+   - **SensorMobile**: This sensor is triggered at the pushing on a button (placed or in a mobile application or on the audio guide itself), 
      when a visitor need suggestions on works related to the one is currently watching, in this case a colored light
-     guide him on other works. 
+     guide him on other works. So even in this case it is a simple system call 
    
    - **SensorColor and SensorGesture**: These two sensors are related to the pervasive game “chromatize it!” in which a 
      visitor using a device takes a color (in the form of a light source) and uses it to color a wall. So the sensor 
@@ -112,7 +113,11 @@ and actuators used:
    - **ActuatorMobile**: In this case the actuator can be a mobile or any device to which we can send message like 
      suggestions on related exhibitions or works, so even the audio-guide itself can be a good actuator.
    - **ActuatorWall**: this is the smart wall that is colored during the pervasive game ”chromatize it!”
-    ![smart_wall](https://i.ibb.co/rMCM5kM/Schermata-2020-05-07-alle-10-55-07.png)
+   
+     ![smart_wall](https://i.ibb.co/rMCM5kM/Schermata-2020-05-07-alle-10-55-07.png)
+    
+        so it is a big screen on which the visitor, with the device with the color, draw something. 
+        
    - **ActuatorPainting**: a painting itself can be an actuator, this only in cases of animated works that can be based 
      on what the visitor like most in an exhibition. It can be just a screen that basing on the visitor show different
      things.
