@@ -128,10 +128,89 @@ Applications model a certain use case that we can have inside the museum. We can
 a general application, that takes care of an overall task like the managing of the light, and a dedicated application 
 that depends from the visitor. Indeed different visitors can be in different states of the same application, for example 
 a visitor that is just arrived at a work cannot be in the same state of a visitor that is in front of it since several 
-minutes. In the following images we represent all the applications implemented in this project, through a state diagram:
+minutes. The code structure of the applications is similar between each other, what change is the update function.
+For example here is the update function of the audio visitor app:
+
+![code_audio_visitor](https://i.ibb.co/fkTVPNQ/Schermata-2020-05-07-alle-17-58-10.png)
+
+In the next paragraphs, we represent all the applications implemented in this project, and the state diagram related:
 ### 1.4.1 Audio visitor app
-Basing on the age of the visitor,  a certain audio track is played. At different ages correspond different audio tracks.
+Basing on the age of the visitor, a certain audio track is played. At different ages correspond different audio tracks.
+
 ![avm](https://i.ibb.co/MMynmnm/Schermata-2020-04-23-alle-18-09-39.png)
 
+In this scenario the visitor that approaches to a work, receive a certain audio basing on his age. This is done in order 
+to make more interesting the visit for visitor of all the ages
 
+### 1.4.2 Lights managing app
+In this scenario basing on the weather conditions, the time and visitor presence, lights turn on or off. 
 
+![lmm](https://i.ibb.co/VJ2yDfw/Schermata-2020-05-07-alle-12-05-26.png)
+
+This scenario is triggered by the notification of the presence sensor, weather sensor or time sensor, so in the case it's
+night or there is a visitor or there are clouds, light are turned on.
+
+### 1.4.3 Audio more information app
+A visitor receives more informations about a work if he spends more time after the end of the track 
+
+![ami](https://i.ibb.co/Jszh24Z/Schermata-2020-05-07-alle-12-08-59.png)
+
+So after that the principal track is played, visitors have the opportunity to listen to another track relative to that work,
+if they stay contemplating it. So for example a visitor that at the end of the track goes to another work, does't receive
+the additional track, while a visitor that stays for more time receive it
+
+### 1.4.4 Pervasive game "Chromatize It!" 
+In an area there are three light sources colored of different colors, a visitor through a device pick one color that 
+uses to paint a smart wall.
+
+![PG](https://i.ibb.co/b1G0XFT/Schermata-2020-05-07-alle-12-27-18.png)
+
+So in this scenario a visitor using a device (can be still the audio-guide) picks a color from a light source, then passing
+the device on the smart wall, it will be colored of the selected color.
+
+### 1.4.5 Light guide visitor app
+A light of a certain color guide a visitor to works he can be interested in.
+
+![lgv](https://i.ibb.co/wLMJ9Ky/Schermata-2020-05-07-alle-12-37-38.png)
+
+In this scenario after that the principal track is played, the user can aks for similar works by pushing a suggestion button
+placed on the audio-guide. He will be guided by a colored light to related works.
+
+### 1.4.6 Audio music relax app
+During a break a visitor received a relaxing music.
+
+![amr](https://i.ibb.co/qDtWhTL/Schermata-2020-05-07-alle-15-38-06.png)
+
+In this scenario when a visitor is taking a break, so when he is sitting on a bench or he is in a waiting zone, a relaxing music
+is played.
+
+### 1.4.7 Mobile suggestions app
+At the end of the visit, the visitor receives on a device a list of related exhibitions he might like
+
+![msa](https://i.ibb.co/ZWbLNb2/Schermata-2020-05-07-alle-15-52-33.png)
+
+In this scenario a visitor, once that the visit is ended, receive on a device (still the audio-guide) a list of other 
+places he might like, basing even on what he liked during the visit.
+
+### 1.4.8 Interactive work app
+This app introduce the possibility for the artists to add an interactive works based on visitors emotions or 
+preferences
+
+![iwm](https://i.ibb.co/Lr88FkH/Schermata-2020-05-07-alle-17-47-36.png)
+
+This scenario add also interactive works, in the sense that the work is active at the presence of a visitor, displaying 
+something like what visitor likes or other properties
+
+## 1.5 THE ORCHESTRATOR
+
+The orchestrator has the task of automatize the process of association from sensors to applications and applications 
+to actuators, solving two problems: address to the visitor only the applications he needs at that moment, and provide
+a dedicated application for each visitor. The first problem rise from the fact that more apps are linked to the same 
+sensor, and since we keep a register in which we link to a sensor the list of apps associated, depending on where the 
+visitor is, we have to create the right apps. The solution is divide apps in different areas and then instantiate them basing on in which area the visitor is. An example of a room can be this: 
+
+![room_ex](https://i.ibb.co/4s1ZmXp/Schermata-2020-05-07-alle-18-08-18.png)
+
+So for a visitor in the works area will be created only apps related to the works area. The second problem is creating an application dedicated to only one visitor. This can be solved in the following way: at the triggering of the physical sensor we create a software instance of that sensor, relative only to a visitor, and we do the same with the instance of an app, that will be dedicated only to that visitor. So we need to get a reference of the visitor (for example a tag detected by a RFID reader) that we associate to the sensor. In this way we can have different instance of the same application dedicated to different visitors. Therefore, the final goal of the project is to create a simulation of the reality managed by the orchestrator and dedicated to a visitor according to a certain program
+
+![orch](https://i.ibb.co/94QXf5p/Schermata-2020-05-07-alle-18-06-32.png)
