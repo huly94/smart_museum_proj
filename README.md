@@ -58,7 +58,7 @@ Where the applications are observers while the orchestrator is a singleton
 Sensors and actuators refer to real sensors and actuators, and for this reason here we provide a description of sensors 
 and actuators used:
 1. Sensors:
-   - Sensor visitor age:  We need this sensor to distinguish different ages of visitors, in order to play to them different 
+   - **Sensor visitor age**:  We need this sensor to distinguish different ages of visitors, in order to play to them different 
    audio tracks and also to give them different experiences. Therefore the right solution is the RFID thanks to which we can transmit 
    information about the age of a visitor through a tag attached for example on the audio guide provided at the beginning of the visit.
    An example can be a RFID reader, with functionality read only, that detects tags at a distance of max 5 meters  
@@ -66,10 +66,10 @@ and actuators used:
    - SensorTimer: This sensor is triggered at the expiration of a simple timer. We need it in order to provide further 
    information about a work if the visitor, at the end of the track, wants to know more about that particular work.
   
-   - SensorClock: A sensor based on the clock. We need it to know the time, in order to turn the lights when it’s dark.
+   - **SensorClock**: A sensor based on the clock. We need it to know the time, in order to turn the lights when it’s dark.
      Both SensorTimer and SensorClock can be realized using a system call 
     
-   - SensorWeather: A sensor that detects the weather, in order to turn the lights on when there are clouds. 
+   - **SensorWeather**: A sensor that detects the weather, in order to turn the lights on when there are clouds. 
      It can be a portable cloud sensor. The Portable Cloud Sensor measures the amount of cloud cover by comparing the 
      temperature of the sky to the ambient ground level temperature. The sky temperature is determined by measuring the 
      amount of radiation in the 8 to 14 micron infrared band. A large difference indicates clear skies, whereas a small
@@ -81,16 +81,16 @@ and actuators used:
      
      Another solution can be using a web service that give continuously the weather. There are several weather APIs, an example 
      can be OpenWeatherMap
-   - SensorPresence: a simple occupancy sensor (probably a passive infraRed sensor) that detects if there is at least 
+   - **SensorPresence**: a simple occupancy sensor (probably a passive infraRed sensor) that detects if there is at least 
      one visitor in the area or none. We need this sensor for the light managing. It is an electronic sensor that 
      measures infrared (IR) light radiating from objects in its field of view.
     ![prensence_sensor](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Light_switch_with_passive_infrared_sensor.jpg/150px-Light_switch_with_passive_infrared_sensor.jpg)
    
-   - SensorMobile: This sensor is triggered by the pushing on a button (placed or in a mobile application or on the audio guide itself), 
+   - **SensorMobile**: This sensor is triggered by the pushing on a button (placed or in a mobile application or on the audio guide itself), 
      when a visitor need suggestions on works related to the one is currently watching, in this case a colored light
      guide him on other works. 
    
-   - SensorColor and SensorGesture: These two sensors are related to the pervasive game “chromatize it!” in which a 
+   - **SensorColor and SensorGesture**: These two sensors are related to the pervasive game “chromatize it!” in which a 
      visitor using a device takes a color (in the form of a light source) and uses it to color a wall. So the sensor 
      color has to detect the color coming out from that light source, and the sensor gesture it’s a motion sensor that 
      detect when a visitor pass the paint on the smart wall. the sensor color can be a sparkFun RGB light sensor - ISL29125.
@@ -100,17 +100,17 @@ and actuators used:
 
 2. Actuators:
    
-   - ActuatorAudio: it is the headphones plugged to the visitor audio-guide, that turn on when visitor stand in front 
+   - **ActuatorAudio**: it is the headphones plugged to the visitor audio-guide, that turn on when visitor stand in front 
      of a work, playing a certain audio track basing on the age. So the audio-guide has the tag that is detected by the 
      RFID reader. examples can be the following:
      ![audio-guide_RFID](https://sc01.alicdn.com/kf/HTB1ZRmKtyOYBuNjSsD4q6zSkFXaa.jpg)
-   - ActuatorLight: these are the lights inside the room that turn on or off basing on time, weather and presence of a 
+   - **ActuatorLight**: these are the lights inside the room that turn on or off basing on time, weather and presence of a 
      visitor.
-   - ActuatorMobile: In this case the actuator can be a mobile or any device to which we can send message like 
+   - **ActuatorMobile**: In this case the actuator can be a mobile or any device to which we can send message like 
      suggestions on related exhibitions or works, so even the audio-guide itself can be a good actuator.
-   - ActuatorWall: this is the smart wall that is colored during the pervasive game ”chromatize it!”
+   - **ActuatorWall**: this is the smart wall that is colored during the pervasive game ”chromatize it!”
     ![smart_wall](https://i.ibb.co/rMCM5kM/Schermata-2020-05-07-alle-10-55-07.png)
-   - ActuatorPainting: a painting itself can be an actuator, this only in cases of animated works that can be based 
+   - **ActuatorPainting**: a painting itself can be an actuator, this only in cases of animated works that can be based 
      on what the visitor like most in an exhibition. It can be just a screen that basing on the visitor show different
      things.
 
@@ -119,4 +119,13 @@ that the sensor has a notify method when it is activated. These are examples of 
 ![code_sensor](https://i.ibb.co/VJGbTVb/Schermata-2020-05-07-alle-11-15-40.png)
 
 ![code_actuator](https://i.ibb.co/qrQ2051/Schermata-2020-05-07-alle-11-17-12.png)
+
+## 1.4 APPLICATIONS
+
+Applications model a certain use case that we can have inside the museum. We can have two types of applications: 
+a general application, that takes care of an overall task like the managing of the light, and a dedicated application 
+that depends from the visitor. Indeed different visitors can be in different states of the same application, for example 
+a visitor that is just arrived at a work cannot be in the same state of a visitor that is in front of it since several 
+minutes. In the following images we represent all the applications implemented in this project, through a state diagram:
+
 
