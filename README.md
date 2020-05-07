@@ -38,7 +38,7 @@ orchestrator as a multiplexer.
 We can consider the overall system as as an event-driven architecture, in which the principal aim is the  production, 
 detection, consumption of, and reaction to events. 
 
-![EDA architechture](https://www.researchgate.net/profile/Joao_Barraca/publication/259753992/figure/fig7/AS:667934183657498@1536259327412/Conceptual-Architecture-of-a-Smart-Environment.png)
+![EDA architechture](https://i.ibb.co/RHR1FnK/EDA-general.png)
 
 In our case the sensors placed in the museum are the event emitter, that  have the responsibility to detect, gather, 
 and transfer events. Actuators instead are the event consumers, that have the responsibility of applying a reaction as 
