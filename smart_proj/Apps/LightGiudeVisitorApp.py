@@ -3,7 +3,7 @@ import logging
 import statemachine
 
 import smart_proj.Sensors.Sensor
-import smart_proj.Apps.Observer
+import smart_proj.Apps.App
 
 """@package docstring
 Documentation for this module.
@@ -12,7 +12,7 @@ A colored light guide the visitor to works related to the current one
 """
 
 
-class LightGuideVisitorMachine(smart_proj.Apps.Observer.Observer):
+class LightGuideVisitorMachine(smart_proj.Apps.App.App):
     colored_light_off_on_a_related_painting = statemachine.State('Colored light off', initial=True)
     colored_light_on_on_a_related_painting = statemachine.State('Colored light on')
 
@@ -26,6 +26,14 @@ class LightGuideVisitorMachine(smart_proj.Apps.Observer.Observer):
     def __init__(self):
         super().__init__()
         self.logger = logging.getLogger(self.__class__.__name__)
+
+    def dependencies_sensors(self) -> []:
+        import smart_proj.Sensors.SensorMobile
+        return [smart_proj.Sensors.SensorMobile.SensorMobile]
+
+    def dependencies_actuators(self) -> []:
+        import smart_proj.Actuators.ActuatorLights
+        return [smart_proj.Actuators.ActuatorLights.ActuatorLights]
 
     def set_user(self, u):
         self.user = u

@@ -2,7 +2,7 @@ import logging
 import statemachine
 
 import smart_proj.Sensors.Sensor
-import smart_proj.Apps.Observer
+import smart_proj.Apps.App
 
 """@package docstring
 Documentation for this module.
@@ -12,7 +12,7 @@ pervasive game “chromatize it!”: In an area there are three light sources co
 """
 
 
-class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
+class PervasiveGameChromatizeIt(smart_proj.Apps.App.App):
     wait = statemachine.State('Wait', initial=True)
     blue_taken = statemachine.State('Blue taken')
     red_taken = statemachine.State('Red taken')
@@ -41,6 +41,16 @@ class PervasiveGameChromatizeIt(smart_proj.Apps.Observer.Observer):
 
     def set_user(self, u):
         self.user = u
+
+    def dependencies_sensors(self) -> []:
+        import smart_proj.Sensors.SensorColors
+        import smart_proj.Sensors.SensorGesture
+        return [smart_proj.Sensors.SensorGesture.SensorGesture, smart_proj.Sensors.SensorColors.SensorColors]
+
+    def dependencies_actuators(self) -> []:
+        import smart_proj.Actuators.ActuatorWall
+        import smart_proj.Actuators.ActuatorMobile
+        return [smart_proj.Actuators.ActuatorMobile.ActuatorMobile, smart_proj.Actuators.ActuatorWall.ActuatorWall]
 
     def attach(self, actuator):
         actuator_name = actuator.__str__()

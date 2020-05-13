@@ -1,7 +1,7 @@
 import logging
 import statemachine
 import smart_proj.Sensors.Sensor
-import smart_proj.Apps.Observer
+import smart_proj.Apps.App
 
 """@package docstring
 Documentation for this module.
@@ -11,7 +11,7 @@ the music is played in his audio-guide headphones
 """
 
 
-class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
+class AudioMusicRelaxMachine(smart_proj.Apps.App.App):
     wait = statemachine.State('Wait', initial=True)
     sound_on = statemachine.State('Sound on')
 
@@ -25,6 +25,14 @@ class AudioMusicRelaxMachine(smart_proj.Apps.Observer.Observer):
     def __init__(self):
         super().__init__()
         self.logger = logging.getLogger(self.__class__.__name__)
+
+    def dependencies_sensors(self) -> []:
+        import smart_proj.Sensors.SensorVisitorAge
+        return [smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge]
+
+    def dependencies_actuators(self) -> []:
+        import smart_proj.Actuators.ActuatorAudio
+        return [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]
 
     def set_user(self, u):
         self.user = u

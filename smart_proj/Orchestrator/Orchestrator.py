@@ -1,5 +1,7 @@
 import logging
 import smart_proj.Sensors.Sensor
+import smart_proj.Actuators.Actuator
+import smart_proj.Apps.App
 
 
 # The class orchestrator is responsible of automatizing the assign process of sensors, app and actuators.
@@ -17,59 +19,73 @@ class Orchestrator:
         return Orchestrator.__instance
 
     def __init__(self):
-        import smart_proj.Apps.AudioVisitorApp
-        import smart_proj.Apps.LightsManagingApp
-        import smart_proj.Apps.InteractiveWorkApp
-        import smart_proj.Apps.LightGiudeVisitorApp
-        import smart_proj.Apps.AudioMusicRelaxApp
-        import smart_proj.Apps.AudioMoreInformationsApp
-        import smart_proj.Apps.MobileSuggestionsApp
-        import smart_proj.Actuators.ActuatorAudio
-        import smart_proj.Actuators.ActuatorLights
-        import smart_proj.Actuators.ActuatorPainting
-        import smart_proj.Actuators.ActuatorMobile
-        import smart_proj.Apps.PervasiveGameChromatizeIt
-        import smart_proj.Actuators.ActuatorWall
 
-        lightApp = smart_proj.Apps.LightsManagingApp.LightsManagingMachine()
-        ligths = smart_proj.Actuators.ActuatorLights.ActuatorLights()
-        lightApp.attach(ligths)
         """ Virtually private constructor. """
         if Orchestrator.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
             Orchestrator.__instance = self
-            # Since the light managing machine is the only app that is not dedicated to an exclusive user, we add it
-            # in the observers list from the beginning
-            self._observers = [lightApp]
-            self.sensor_to_app = dict([
-                ("SensorVisitorAge", [smart_proj.Apps.AudioVisitorApp.AudioVisitorMachine,
-                                      smart_proj.Apps.AudioMoreInformationsApp.AudioMoreInformationMachine,
-                                      smart_proj.Apps.AudioMusicRelaxApp.AudioMusicRelaxMachine,
-                                      smart_proj.Apps.InteractiveWorkApp.InteractiveWorkMachine,
-                                      smart_proj.Apps.MobileSuggestionsApp.MobileSuggestionsMachine]),
-                ("SensorMobile", [smart_proj.Apps.LightGiudeVisitorApp.LightGuideVisitorMachine]),
-                ("SensorColors", [smart_proj.Apps.PervasiveGameChromatizeIt.PervasiveGameChromatizeIt])
-            ])
-            self.app_to_actuators = dict([
-                ("AudioVisitorMachine", [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]),
-                ("LightGuideVisitorMachine", [smart_proj.Actuators.ActuatorLights.ActuatorLights]),
-                ("AudioMusicRelaxMachine", [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]),
-                ("AudioMoreInformationMachine", [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]),
-                ("InteractiveWorkMachine", [smart_proj.Actuators.ActuatorPainting.ActuatorPainting]),
-                ("MobileSuggestionsMachine", [smart_proj.Actuators.ActuatorMobile.ActuatorMobile]),
-                ("PervasiveGameChromatizeIt", [smart_proj.Actuators.ActuatorMobile.ActuatorMobile,
-                                               smart_proj.Actuators.ActuatorWall.ActuatorWall])
-            ])
-            self.areas_to_app = dict([
-                ("Exit area", ["MobileSuggestionsMachine"]),
-                ("Relax area", ["AudioMusicRelaxMachine", "LightsManagingMachine"]),
-                ("Works area", ["AudioVisitorMachine", "LightsManagingMachine", "LightGuideVisitorMachine",
-                                "AudioMoreInformationMachine"]),
-                ("Interactive work area", "InteractiveWorkMachine"),
-                ("Game area", ["PervasiveGameChromatizeIt"])
-                ])
+            self._observers = []
+            self.sensors = []
+            self.actuators = []
+            self.sensor_to_app = {}
+            self.app_to_actuators = {}
+            self.areas_to_app = {}
             self.logger = logging.getLogger(self.__class__.__name__)
+            self.app_to_typology = {}
+
+    def register_sensor(self, this_sensor: smart_proj.Sensors.Sensor.Sensor):
+        self.sensors.append(type(this_sensor))
+
+    def register_actuator(self, this_actuator: smart_proj.Actuators.Actuator.Actuator):
+        self.actuators.append(type(this_actuator))
+
+    def register_area(self, this_app: smart_proj.Apps.App.App, area: str):
+        app_name = this_app.__str__()
+        name = app_name[0:app_name.index("(")]
+        if area in self.areas_to_app.keys():
+            self.areas_to_app[area].append(name)
+        else:
+            self.areas_to_app[area] = []
+            self.areas_to_app[area].append(name)
+
+    def register_typology(self, app: smart_proj.Apps.App.App, typology: str):
+        app_name = app.__str__()
+        name = app_name[0:app_name.index("(")]
+        self.app_to_typology[name] = typology
+        if typology == "General":
+            for act in self.app_to_actuators[name]:
+                act = act()
+                app.attach(act)  # i create the actuator and attach it
+            self._observers.append(app)
+
+    def register_app(self, this_app: smart_proj.Apps.App.App):
+        deps_sensor = this_app.dependencies_sensors()
+        deps_actuator = this_app.dependencies_actuators()
+        for sensor in deps_sensor:
+            if sensor in self.sensors:
+                sensor_name = sensor().__str__()
+                name = sensor_name[0:sensor_name.index("(")]
+                if name in self.sensor_to_app.keys():
+                    self.sensor_to_app[name].append(type(this_app))
+                else:
+                    self.sensor_to_app[name] = []
+                    self.sensor_to_app[name].append(type(this_app))
+            else:
+                raise Exception('Sensor Not Supported',
+                                'Sensor type ' + str(sensor) + ' is not supported by the orchestrator')
+        for actuator in deps_actuator:
+            if actuator in self.actuators:
+                app_name = this_app.__str__()
+                name = app_name[0:app_name.index("(")]
+                if name in self.app_to_actuators.keys():
+                    self.app_to_actuators[name].append(actuator)
+                else:
+                    self.app_to_actuators[name] = []
+                    self.app_to_actuators[name].append(actuator)
+            else:
+                raise Exception('Actuator Not Supported',
+                                'Actuator type ' + str(actuator) + ' is not supported by the orchestrator')
 
     def exist_app_user(self, user):
         found = False
@@ -97,17 +113,18 @@ class Orchestrator:
             for app in self.sensor_to_app[sensor_name[0:sensor_name.index("(")]]:
                 tmp = app()  # create the app
                 app_name = tmp.__str__()  # i get the name of the app
-                if app_name[0:app_name.index("(")] in self.areas_to_app[
-                    subject.area]:  # if the app is in the area of the sensor
-                    for act in self.app_to_actuators[app_name[0:app_name.index("(")]]:
-                        act = act()
-                        tmp.attach(act)  # i create the actuator and attach it
-                        tmp.set_user(subject.user)  # i set the user
-                    if not self.exist_app_user(tmp):  # i control if the app of this user already exists
-                        self.attach(tmp)  # if not i attach it to the observers list
+                if self.app_to_typology[app_name[0:app_name.index("(")]] == "Individual":
+                    if app_name[0:app_name.index("(")] in self.areas_to_app[subject.area]:  # if the app is in the area of the sensor
+                        for act in self.app_to_actuators[app_name[0:app_name.index("(")]]:
+                            act = act()
+                            tmp.attach(act)  # i create the actuator and attach it
+                            tmp.set_user(subject.user)  # i set the user
+                        if not self.exist_app_user(tmp):  # i control if the app of this user already exists
+                            self.attach(tmp)  # if not i attach it to the observers list
+
         # Updating phase
         for observer in self._observers:
-            observer.update(subject) # i update all the observers, every app receives the sensor signal, but if it does
+            observer.update(subject)  # i update all the observers, every app receives the sensor signal, but if it does
             # not match in its update method, the app does nothing
         # Deleting phase
         i = 0
@@ -117,5 +134,3 @@ class Orchestrator:
                 self.detach(obs)
                 i -= 1
             i += 1
-
-

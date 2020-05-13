@@ -1,6 +1,6 @@
 import logging
 
-import smart_proj.Apps.Observer
+import smart_proj.Apps.App
 import smart_proj.Sensors.Sensor
 import statemachine
 
@@ -11,7 +11,7 @@ The lights turn on or off basing on time, weather or visitor presence
 """
 
 
-class LightsManagingMachine(smart_proj.Apps.Observer.Observer):
+class LightsManagingMachine(smart_proj.Apps.App.App):
     lights_off = statemachine.State('Lights off', initial=True)
     lights_on_for_visitors = statemachine.State('Lights on for visitors')
     lights_on_for_clouds = statemachine.State('Lights on for clouds')
@@ -37,6 +37,17 @@ class LightsManagingMachine(smart_proj.Apps.Observer.Observer):
 
     def attach(self, lights):
         self.actuator = lights
+
+    def dependencies_sensors(self) -> []:
+        import smart_proj.Sensors.SensorPresence
+        import smart_proj.Sensors.SensorClock
+        import smart_proj.Sensors.SensorWeather
+        return [smart_proj.Sensors.SensorClock.SensorClock, smart_proj.Sensors.SensorWeather.SensorWeather,
+                smart_proj.Sensors.SensorPresence.SensorPresence]
+
+    def dependencies_actuators(self) -> []:
+        import smart_proj.Actuators.ActuatorLights
+        return [smart_proj.Actuators.ActuatorLights.ActuatorLights]
 
     def on_turn_the_lights_on_visitor(self):
         self.logger.info("luci accese per visitatore")

@@ -1,6 +1,6 @@
 import logging
 import smart_proj.Sensors.Sensor
-import smart_proj.Apps.Observer
+import smart_proj.Apps.App
 import statemachine
 
 """@package docstring
@@ -11,7 +11,7 @@ the audio is transmitted on the audio-guide headphones of the visitor
 """
 
 
-class AudioVisitorMachine(smart_proj.Apps.Observer.Observer):
+class AudioVisitorMachine(smart_proj.Apps.App.App):
     wait = statemachine.State('Wait', initial=True)
     playing_track_u18 = statemachine.State('Playing track for u18')
     playing_track_o18 = statemachine.State('Playing track for o18')
@@ -30,6 +30,14 @@ class AudioVisitorMachine(smart_proj.Apps.Observer.Observer):
 
     def set_user(self, u):
         self.user = u
+
+    def dependencies_sensors(self) -> []:
+        import smart_proj.Sensors.SensorVisitorAge
+        return [smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge]
+
+    def dependencies_actuators(self) -> []:
+        import smart_proj.Actuators.ActuatorAudio
+        return [smart_proj.Actuators.ActuatorAudio.ActuatorAudio]
 
     def attach(self, audio):
         self.actuator = audio

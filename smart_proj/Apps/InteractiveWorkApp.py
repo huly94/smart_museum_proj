@@ -3,7 +3,7 @@ import logging
 import statemachine
 
 import smart_proj.Sensors.Sensor
-import smart_proj.Apps.Observer
+import smart_proj.Apps.App
 
 """@package docstring
 Documentation for this module.
@@ -13,7 +13,7 @@ it can be based on the emotions or the preferences of the user
 """
 
 
-class InteractiveWorkMachine(smart_proj.Apps.Observer.Observer):
+class InteractiveWorkMachine(smart_proj.Apps.App.App):
     wait = statemachine.State('Wait', initial=True)
     work_animated = statemachine.State('Work animated')
 
@@ -27,6 +27,14 @@ class InteractiveWorkMachine(smart_proj.Apps.Observer.Observer):
     def __init__(self):
         super().__init__()
         self.logger = logging.getLogger(self.__class__.__name__)
+
+    def dependencies_sensors(self) -> []:
+        import smart_proj.Sensors.SensorVisitorAge
+        return [smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge]
+
+    def dependencies_actuators(self) -> []:
+        import smart_proj.Actuators.ActuatorPainting
+        return [smart_proj.Actuators.ActuatorPainting.ActuatorPainting]
 
     def set_user(self, u):
         self.user = u

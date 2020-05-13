@@ -1,7 +1,7 @@
 import logging
 import statemachine
 import smart_proj.Sensors.Sensor
-import smart_proj.Apps.Observer
+import smart_proj.Apps.App
 
 """@package docstring
 Documentation for this module.
@@ -10,7 +10,7 @@ At the end of the visit the visitor receive on a device a list of related exhibi
 """
 
 
-class MobileSuggestionsMachine(smart_proj.Apps.Observer.Observer):
+class MobileSuggestionsMachine(smart_proj.Apps.App.App):
     wait = statemachine.State('Wait', initial=True)
     suggestions_received = statemachine.State('Suggestions received')
 
@@ -26,6 +26,14 @@ class MobileSuggestionsMachine(smart_proj.Apps.Observer.Observer):
 
     def set_user(self, u):
         self.user = u
+
+    def dependencies_sensors(self) -> []:
+        import smart_proj.Sensors.SensorVisitorAge
+        return [smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge]
+
+    def dependencies_actuators(self) -> []:
+        import smart_proj.Actuators.ActuatorMobile
+        return [smart_proj.Actuators.ActuatorMobile.ActuatorMobile]
 
     def attach(self, mobile):
         self.actuator = mobile
