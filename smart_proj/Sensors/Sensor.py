@@ -10,12 +10,15 @@ class Sensor(statemachine.StateMachine):
         self.area = ""
         self.user = ""
 
+    # set the area of the sensor
     def set_area(self, r):
         self.area = r
 
+    # set the user to which the software instance is dedicated
     def set_user(self, u):
         self.user = u
 
+    # send a value to the orchestrator
     def notify(self):
         import smart_proj.Orchestrator.Orchestrator
         sensor = self

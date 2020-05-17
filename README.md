@@ -254,14 +254,14 @@ CODE: https://github.com/huly94/smart_museum_proj/blob/master/smart_proj/Apps/In
 
 ## 1.5 THE ORCHESTRATOR
 
-The orchestrator has the task of automatize the process of association from sensors to applications and applications 
+The orchestrator has the task of automatizing the process of association from sensors to applications and applications 
 to actuators, solving two problems: address to the visitor only the applications he needs at that moment, and provide
 a dedicated application for each visitor. The first problem rise from the fact that more apps are linked to the same 
 sensor, and since we keep a register in which we link to a sensor the list of apps associated, depending on where the 
-visitor is, we have to create the right apps. The solution is divide apps in different areas and then instantiate them basing on in which area the visitor is. An example of a room can be this: 
+visitor is, we have to create the right apps. The solution is to divide apps in different areas and then instantiate them basing on in which area the visitor is. An example of a room can be this: 
 
 ![room_ex](https://i.ibb.co/4s1ZmXp/Schermata-2020-05-07-alle-18-08-18.png)
 
-So for a visitor in the works area will be created only apps related to the works area. The second problem is creating an application dedicated to only one visitor. This can be solved in the following way: at the triggering of the physical sensor we create a software instance of that sensor, relative only to a visitor, and we do the same with the instance of an app, that will be dedicated only to that visitor. So we need to get a reference of the visitor (for example a tag detected by a RFID reader) that we associate to the sensor. In this way we can have different instance of the same application dedicated to different visitors. Therefore, the final goal of the project is to create a simulation of the reality managed by the orchestrator and dedicated to a visitor according to a certain program
+So for a visitor in the works area will be created only apps related to the works area. The second problem is creating an application dedicated to only one visitor. This can be solved in the following way: at the triggering of the physical sensor we create a software instance of that sensor, relative only to a visitor, and we do the same with the instance of an app, that will be dedicated only to that visitor. So we need to get a reference of the visitor (for example a tag detected by an RFID reader) that we associate to the sensor. In this way, we can have different instances of the same application dedicated to different visitors. Therefore, the final goal of the project is to create a simulation of the reality, managed by the orchestrator, dedicated to a visitor according to a certain program, in which sensors and actuator are used to accommodate different applications. 
 
 ![orch](https://i.ibb.co/94QXf5p/Schermata-2020-05-07-alle-18-06-32.png)
