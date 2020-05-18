@@ -1,13 +1,16 @@
 # Project Smart Museum: introduction
 
-museums are one of the most important cultural destinations for tourists and not. Indeed, they contains a collection of 
+museums are one of the most important cultural destinations for tourists and not. Indeed, they contain a collection of 
 works linked to one or more cultural aspect like art, science or technology. Today, museums are diffused in all the cities 
 of the world, and their main task is not only to preserve objects and works of art, but also spread knowledge through 
 the organization of exhibitions, guided tours and conferences. However, with the technological progress, museums need to
 modernize themselves. So, museums have some needs that can be satisfied using IoT, that permits to introduce increasingly 
-involving and more interactive experiences suitable for all the ages. This is right the purpose of this project. To do this, 
+involving and more interactive experiences suitable for all the ages. Also, even smart environments, and in particular smart museums, have some needs: first a set of devices, sensors and actuators, that permit to interact with users. These elements don't have a one-way approach, one device indeed can be used for multiple purposes. Then to bring all these devices together, is important to create a network, Wi-Fi for example. We can have more than one network where devices are connected (Bluetooth, ethernet and so on). There is also the need for a component that analyzes and processes sensed data for the extraction of knowledge, events and high-level information. 
+This is right the purpose of this project. To do this, 
 we have to set a smart environment, composed by sensors, applications and actuators, seen as transducers, 
-automatized by an overall entity, called orchestrator. In the next paragraphs we want to show our approach, 
+automatized by an overall entity, called orchestrator.
+
+In the next paragraphs, we want to show our approach, 
 providing also some examples, the physical and software composition of sensors and actuators, a description 
 of the applications we have chosen and an overview on the orchestrator tasks.
 
@@ -21,10 +24,9 @@ or applications, as a state machine. We first have to define these objects:
 
 1. Sensors: represent a physical sensor that can be placed inside a museum to get certain inputs.
 2. Actuators: Represents a physical device that produce a certain output
-3. Applications (Processes): An application models a certain use case that we have inside a museum. An example of application is the managing of the light basing on time, weather or visitor presence, or the reproduction of an audio track related to a work, basing on the age of the visitor.
+3. Applications (Processes): An application models a certain use case that we have inside a museum. An example of application is the managing of the light basing on time, weather or visitor presence, or the reproduction of an audio track related to a work, based on the age of the visitor.
 
-So the applications are state machines that are triggered by the activation of a sensor, thanks to which we have a 
-transition in another state in which the application can make use of an actuator to reach its goal (switch on the light, 
+So the applications are state machines that are triggered by the activation of a sensor, that makes possible a transition in another state, in which the application can make use of an actuator to reach its goal (switch on the light, 
 play an audio track and so on). To achieve this situation we need an intermediary between sensor and apps, able to recognize 
 the signal sent by the sensor and create the correct application and actuator to associate. this is possible thanks to a register, 
 incorporated to the orchestrator, composed by two maps: one has a sensor as key and as value the list of app associated, 
@@ -41,12 +43,12 @@ orchestrator as a multiplexer.
 
 ## 1.2 THE ARCHITECTURE 
 
-We can consider the overall system as as an event-driven architecture, in which the principal aim is the  production, 
+We can consider the overall system as an event-driven architecture, in which the principal aim is the  production, 
 detection, consumption of, and reaction to events. 
 
 ![EDA architechture](https://i.ibb.co/gZbKZjQ/EDA-general.jpg)
 
-In our case the sensors placed in the museum are the event emitter, that  have the responsibility to detect, gather, 
+In our case, the sensors placed in the museum are the event emitter, that  have the responsibility to detect, gather, 
 and transfer events. Actuators instead are the event consumers, that have the responsibility of applying a reaction as 
 soon as an event is presented. In this image, in particular, we need to clarify components responsibilities:
   
@@ -56,11 +58,17 @@ soon as an event is presented. In this image, in particular, we need to clarify 
   - **The reasoning component** is the orchestrator, that has to select the correct application for the notification received.
   - **Behaviour adaptation** is the selected application that based on its current state activates a certain actuator.
 
-So the final architecture is the following:
+We can also view it as a cycle:
 
-![EDA_proj](https://i.ibb.co/yS1hLGZ/Eda-architecture-2.jpg)
+![EDA_proj](https://i.ibb.co/x6hWtz6/Untitled-Diagram.jpg)
 
-Instead the software architecture is the following:
+We start from the level of device connection (1) and then we sense and collect all this data by sensors (2), 
+and communicate them (3). As soon as the data is collected, is important to analyze them (4). This is the task of the 
+orchestrator that create knowledge of what is happening in the physical world. This kind of analysis provides to us 
+actionable intelligence (5), and these actions that we get, have a direct impact on the environment, allowing us to 
+interact with it (6).
+
+Instead, the software architecture is the following:
 
 ![EDA_proj](https://i.ibb.co/yQ1T40X/UML.jpg)
 
@@ -113,7 +121,7 @@ and actuators used:
    - **SensorColour and SensorGesture**: These two sensors are related to the pervasive game “chromatize it!” in which a 
      visitor using a device takes a colour (in the form of a light source) and uses it to colour a wall. So the sensor 
      colour has to detect the colour coming out from that light source, and the sensor gesture it’s a motion sensor that 
-     detects when a visitor pass the paint on the smart wall. the sensor colour can be a sparkFun RGB light sensor - ISL29125.
+     detects when a visitor pass the paint on the smart wall. the sensor colour can be a SparkFun RGB light sensor - ISL29125.
      The ISL29125 breakout board makes it very easy to sense and record the light intensity of the general red, green,
      and blue spectrums of visible light while rejecting IR from light sources.
      
@@ -125,7 +133,10 @@ and actuators used:
      of a work, playing a certain audio track based on the age. So the audio-guide has the tag that is detected by the 
      RFID reader. examples can be the following:
      ![audio-guide_RFID](https://sc01.alicdn.com/kf/HTB1ZRmKtyOYBuNjSsD4q6zSkFXaa.jpg)
-   - **ActuatorLight**: these are the lights inside the room that turns on or off basing on time, weather and presence of a 
+     
+     ![audio-guide_RFID](https://i.ibb.co/N2fVzqK/Schermata-2020-05-18-alle-12-55-08.png)
+
+   - **ActuatorLight**: these are the lights inside the room that turns on or off based on time, weather and presence of a 
      visitor.
    - **ActuatorMobile**: In this case, the actuator can be a mobile or any device to which we can send messages like 
      suggestions on related exhibitions or works, so even the audio-guide itself can be a good actuator.
@@ -133,7 +144,7 @@ and actuators used:
    
      ![smart_wall](https://i.ibb.co/rMCM5kM/Schermata-2020-05-07-alle-10-55-07.png)
     
-        so it is a big screen on which the visitor, with the device with the color, draw something. 
+        so it is a big screen on which the visitor, with the device with the colour, draw something. 
         
    - **ActuatorPainting**: a painting itself can be an actuator, this only in cases of animated works that can be based 
      on what the visitor like most in an exhibition. It can be just a screen that basing on the visitor show different
@@ -162,7 +173,7 @@ off, when the actuator is inactive, while on when the actuator is activated from
 
 Applications model a certain use case that we can have inside the museum. We can have two types of applications: 
 a general application, that takes care of an overall task like the managing of the light, and an individual (or dedicated) 
-application that depends on the visitor. Indeed different visitors can be in different states of the same application, for example 
+application that depends on the visitor. Indeed different visitors can be in different states of the same application, for example, 
 a visitor that is just arrived at a work cannot be in the same state of a visitor that is in front of it since several 
 minutes. Applications are state machines, and the code of the abstract app, that has an update method that is different in every specific application, is the following:
 
@@ -174,8 +185,8 @@ A certain audio track is played based on the visitor age. Different ages have di
  
 ![avm](https://i.ibb.co/MMynmnm/Schermata-2020-04-23-alle-18-09-39.png)
 
-In this scenario the visitor that approaches to a work, receive a certain audio basing on his age. This is done in order 
-to make more interesting the visit for visitor of all the ages
+In this scenario, the visitor that approaches to a work, receive a certain audio basing on his age. This is done
+to make more interesting the visit for visitors of all the ages
 
 CODE: https://github.com/huly94/smart_museum_proj/blob/master/smart_proj/Apps/AudioVisitorApp.py 
 
@@ -195,7 +206,7 @@ A visitor receives more information about a work if he spends more time after th
 ![ami](https://i.ibb.co/Jszh24Z/Schermata-2020-05-07-alle-12-08-59.png)
 
 So after the principal track is played, visitors have the opportunity to listen to another track relative to that work,
-if they stay contemplating it. So, for example, a visitor that at the end of the track goes to another work, does't receive
+if they stay contemplating it. So, for example, a visitor that at the end of the track goes to another work, doesn't receive
 the additional track, while a visitor that stays for more time receive it.
 
 CODE: https://github.com/huly94/smart_museum_proj/blob/master/smart_proj/Apps/AudioMoreInformationsApp.py
