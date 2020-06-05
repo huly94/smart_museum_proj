@@ -29,7 +29,10 @@ class AudioVisitorMachine(smart_proj.Apps.App.App):
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def set_user(self, u):
-        self.user = u
+        if self.typology == "General":
+            raise Exception("Cannot define a user for a general app!")
+        elif self.typology == "Individual":
+            self.user = u
 
     def dependencies_sensors(self) -> []:
         import smart_proj.Sensors.SensorVisitorAge

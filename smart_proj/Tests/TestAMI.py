@@ -35,6 +35,10 @@ if __name__ == '__main__':
     myApp = smart_proj.Apps.AudioVisitorApp.AudioVisitorMachine()
     myAppMoreInfo = smart_proj.Apps.AudioMoreInformationsApp.AudioMoreInformationMachine()
 
+    # Step 3.1.1: Set the typology of the app
+    myApp.set_typology("Individual")
+    myAppMoreInfo.set_typology("Individual")
+
     # Step 3.2: Register App to orchestrator
     my_orchestrator.register_app(myApp)
     my_orchestrator.register_app(myAppMoreInfo)
@@ -42,10 +46,6 @@ if __name__ == '__main__':
     # Step 3.3: Register the Area of the app to the orchestrator
     my_orchestrator.register_area(myApp, "Works area")
     my_orchestrator.register_area(myAppMoreInfo, "Works area")
-
-    # Step 4: Set the typology of the app
-    my_orchestrator.register_typology(myApp, "Individual")
-    my_orchestrator.register_typology(myAppMoreInfo, "Individual")
 
     # Assign an area to the sensors
     my_sensor.set_area("Works area")

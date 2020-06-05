@@ -33,6 +33,13 @@ class Orchestrator:
             self.areas_to_app = {}
             self.logger = logging.getLogger(self.__class__.__name__)
             self.app_to_typology = {}
+            # Context Management
+            # list of active visitors
+            self.visitors = []
+            # History of apps for each user
+            self.user_history = {}
+            # Table of active processes
+            self.users_active_processes = {}
 
     # Method to register a sensor controlled by the orchestrator.
     def register_sensor(self, this_sensor: smart_proj.Sensors.Sensor.Sensor):
@@ -61,14 +68,6 @@ class Orchestrator:
         name = app_name[0:app_name.index("(")]
         #  assign to that app the typology
         self.app_to_typology[name] = typology
-        if typology == "General":
-            # i check first that the app is registered
-            if app.__class__ in self.sensor_to_app.values() and name in self.app_to_actuators.keys():
-                for act in self.app_to_actuators[name]:
-                    act = act()
-                    app.attach(act)
-                # if the app is general i add it to the observers, because i need only one instance
-                self._observers.append(app)
 
     # Method to register an app controlled by the orchestrator.
     def register_app(self, this_app: smart_proj.Apps.App.App):
@@ -105,6 +104,14 @@ class Orchestrator:
             else:
                 raise Exception('Actuator Not Supported',
                                 'Actuator type ' + str(actuator) + ' is not supported by the orchestrator')
+            # if the app is general, i add it to the observers
+            if this_app.typology == "General":
+                for act in self.app_to_actuators[name]:
+                    act = act()
+                    this_app.attach(act)
+                self._observers.append(this_app)
+            # i register the typology
+            self.register_typology(this_app, this_app.typology)
 
     # i check if exists an app related to a specified user
     def exist_app_user(self, user):
@@ -133,7 +140,11 @@ class Orchestrator:
             for app in self.sensor_to_app[sensor_name[0:sensor_name.index("(")]]:
                 tmp = app()  # create the app
                 app_name = tmp.__str__()  # i get the name of the app
+                tmp.name = subject.position
+                tmp.set_typology(self.app_to_typology[app_name[0:app_name.index("(")]])
                 if self.app_to_typology[app_name[0:app_name.index("(")]] == "Individual":
+                    # Add the visitor to the list
+                    self.add_visitor(subject.user)
                     # check if the app is in the area of the sensor
                     if app_name[0:app_name.index("(")] in self.areas_to_app[subject.area]:
                         for act in self.app_to_actuators[app_name[0:app_name.index("(")]]:
@@ -142,6 +153,8 @@ class Orchestrator:
                             tmp.set_user(subject.user)  # i set the user
                         if not self.exist_app_user(tmp):  # i control if the app of this user already exists
                             self.attach(tmp)  # if not i attach it to the observers list
+                        # i update the context for the visitor
+                        self.update_context(tmp, tmp.user)
 
         # Updating phase
         for observer in self._observers:
@@ -155,3 +168,15 @@ class Orchestrator:
                 self.detach(obs)
                 i -= 1
             i += 1
+
+    # Add a new visitor in the list
+    def add_visitor(self, user: str):
+        if user not in self.visitors:
+            self.visitors.append(user)
+            self.user_history[user] = []
+
+    # Update the history of the user and the active processes
+    def update_context(self, tmp: smart_proj.Apps.App, user: str):
+        if tmp.name not in self.user_history[user]:
+            self.user_history[user].append(tmp.name)
+        self.users_active_processes[user] = tmp.name

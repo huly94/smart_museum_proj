@@ -30,19 +30,22 @@ if __name__ == '__main__':
     # Step 3.1: Initialize Application
     myApp = smart_proj.Apps.AudioVisitorApp.AudioVisitorMachine()
 
+    # Step 3.1.1: Set the typology of the app
+    myApp.set_typology("Individual")
+
     # Step 3.2: Register App to orchestrator
     my_orchestrator.register_app(myApp)
 
     # Step 3.3: Register the Area of the app to the orchestrator
     my_orchestrator.register_area(myApp, "Works area")
 
-    # Step 4: Set the typology of the app
-    my_orchestrator.register_typology(myApp, "Individual")
-
     my_sensor.set_user("1")
     my_sensor.set_area("Works area")
+    my_sensor.set_position("Mona Lisa artwork")
 
     my_sensor.run("visitor_u18_arrived")
     my_sensor.run("visitor_u18_left")
+
+
 
 

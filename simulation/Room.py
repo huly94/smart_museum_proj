@@ -74,6 +74,7 @@ class Room:
                                 sensor_timer = smart_proj.Sensors.SensorTimer.SensorTimer()
                                 sensor_timer.set_user(sensor.user)
                                 sensor_timer.set_area(sensor.area)
+                                sensor_timer.set_position(point)
                                 sensor_timer.run("end_timer")
 
                 if "RFID reader" in self.point_to_sensor[point]:
@@ -81,6 +82,7 @@ class Room:
                         sensor_visitor = smart_proj.Sensors.SensorVisitorAge.SensorVisitorAge()
                         sensor_visitor.set_user(visitor.tag)
                         sensor_visitor.set_area(self.point_to_areas[point])
+                        sensor_visitor.set_position(point)
                         if not self.exist_instance_at_point(sensor_visitor, point):
                             self.add_active_instance(sensor_visitor, point)
                             self.instances_to_timer[sensor_visitor] = len(self.people_in_room)

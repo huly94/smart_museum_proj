@@ -36,11 +36,11 @@ if __name__ == '__main__':
     # Step 3.1: Initialize Application
     myApp = smart_proj.Apps.LightsManagingApp.LightsManagingMachine()
 
+    # Step 3.1.1: Set the typology of the app
+    myApp.set_typology("General")
+
     # Step 3.2: Register App to orchestrator
     my_orchestrator.register_app(myApp)
-
-    # Step 4: Set the typology of the app
-    my_orchestrator.register_typology(myApp, "General")
 
     # In this example there is only 1 app, otherwise,
     # repeat Step 3 for every app needed.

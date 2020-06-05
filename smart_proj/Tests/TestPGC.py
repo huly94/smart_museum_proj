@@ -36,14 +36,14 @@ if __name__ == '__main__':
     # Step 3.1: Initialize Application
     myApp = smart_proj.Apps.PervasiveGameChromatizeIt.PervasiveGameChromatizeIt()
 
+    # Step 3.1.1: Set the typology of the app
+    myApp.set_typology("Individual")
+
     # Step 3.2: Register App to orchestrator
     my_orchestrator.register_app(myApp)
 
     # Step 3.3: Register the Area of the app to the orchestrator
     my_orchestrator.register_area(myApp, "Game area")
-
-    # Step 4: Set the typology of the app
-    my_orchestrator.register_typology(myApp, "Individual")
 
     mySensor.set_user("1")
     mySensorGesture.set_user("1")
